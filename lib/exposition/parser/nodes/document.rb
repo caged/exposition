@@ -1,25 +1,10 @@
-module Document
-  class General < Treetop::Runtime::SyntaxNode; end
+module Document  
   class Doc < Treetop::Runtime::SyntaxNode
+    include Enumerable
+    include Properties
     
-  end
-  class Text          < General; end
-  class CommentStart  < General; end
-  class CommentEnd    < General; end
-  class LineBreak     < General; end
-  class Space         < General; end
-  class Char          < General; end
-  class Line          < General; end
-  class BlankLine < General
-    def to_s
-      ""
+    def properties
+      elements.select { |e| e.is_a?(Property) }
     end
   end
-
-  class TextLine < General
-    def to_s
-      text.text_value
-    end
-  end
-
 end

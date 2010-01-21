@@ -1,0 +1,9 @@
+grammar Properties
+  rule property
+    line_break "@property" attributes* char+ <Property>
+  end
+  
+  rule attributes
+    space* '(' space* (('nonatomic' / 'atomic' / 'retain' / 'assign' / 'readwrite' / 'readonly') space* ',' space*)+ space* ')'
+  end
+end

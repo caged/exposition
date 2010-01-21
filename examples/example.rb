@@ -7,17 +7,20 @@ def pre_process(str)
   string = string.split("\n").map do |line|
     line.gsub(/\s+$/, '')
   end.join("\n")
-  "\n#{string}\n"
+  string = ("\n" << string) unless string =~ /\n^/
+  string
 end
 
-def test(str)
+def parse_doc(str)
   parser = DocumentParser.new
   doc = parser.parse(pre_process(str))
   raise ParseError, parser unless doc
+  doc
 end
 
 begin
-  test(str)
+  doc = parse_doc(str)
+  pp doc.properties.collect { |p| p.text_value.to_s }
 rescue ParseError => e
   puts e.message
 end

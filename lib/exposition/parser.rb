@@ -13,9 +13,31 @@ class ParseError < StandardError
   def message    
     <<-EOS
       ParseError: Expected #{expected_string} at line #{line}, column #{column} (byte #{index + 1}) after #{@parser.input[@parser.index...index].inspect}.
-      
-      #{source_code}
+
+#{source_highlight}
     EOS
+  end
+  
+  def source_highlight
+    lines = source_code.split("\n")
+    lines = lines.collect do |l|
+      if l =~ /^\-+>/
+        chars = l.chars.to_a
+        clean_string = l.gsub(/^\-+>\s*[0-9]+\s*/, '')
+        actual_column = (l.length - clean_string.length) + column
+        
+        char = clean_string.chars.to_a[column]
+        if char == ' ' || char == nil
+          char = on_red(' ')
+        else
+          char = bold(red(underline(char)))
+        end
+        chars[actual_column] = char
+        l = chars.join
+      end
+      l
+    end
+    lines.join("\n")
   end
   
   def line
