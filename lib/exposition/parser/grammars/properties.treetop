@@ -1,9 +1,34 @@
 grammar Properties
+  include Basic
   rule property
-    line_break "@property" attributes* char+ <Property>
+    line_break "@property" space* attributes* property_type protocol* <Property>
   end
   
   rule attributes
-    space* '(' space* (('nonatomic' / 'atomic' / 'retain' / 'assign' / 'readwrite' / 'readonly') space* ',' space*)+ space* ')'
+    '(' space* (attribute_values ','* space*)+ space* ')'
+  end
+  
+  rule attribute_values
+    ('nonatomic' / 'atomic' / 'retain' / 'copy' / 'assign' / 'readwrite' / 'readonly' / attributes_getter_setter)
+  end
+    
+  rule attributes_getter_setter
+    ('g' / 's') 'etter' space* '=' space* prop_name:valid_name+
+  end
+  
+  rule property_type
+    space ('IBOutlet' / garbage_collection_modifiers)* space* type:valid_name space* '*'*
+  end
+  
+  rule garbage_collection_modifiers
+    '__weak' / '__strong' / core_foundation_property
+  end
+  
+  rule core_foundation_property
+    '__attribute__((' type:valid_name+ '))'
+  end
+  
+  rule protocol
+    '<' (space* type:valid_name ','* space*)+ space* '>'
   end
 end

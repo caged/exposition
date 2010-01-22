@@ -1,5 +1,6 @@
 module Properties
-  class Property < Treetop::Runtime::SyntaxNode
-    
+  class Base < Treetop::Runtime::SyntaxNode; end
+  class Property < Base
+
   end
 end

@@ -26,6 +26,10 @@ grammar Basic
   rule comment_end
     line_break space* "*/" space* line_break <CommentEnd>
   end
+  
+  rule valid_name
+    [_a-zA-Z0-9]+
+  end
 
   rule line_break
     [\n] <LineBreak>
