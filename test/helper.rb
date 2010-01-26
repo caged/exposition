@@ -6,6 +6,15 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'exposition'
 
 class Test::Unit::TestCase
+  include Basic
+  def parse(str)
+    result = @parser.parse(str)
+    unless result
+      puts "\n" << @parser.terminal_failures.join("\n") << "\n"
+    end
+    assert !result.nil?
+    result
+  end
 end
 
 ##

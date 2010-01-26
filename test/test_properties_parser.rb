@@ -6,6 +6,7 @@ context "Parsing Properties Declared in Header Files" do
   end
   
   test 'parses basic properties' do
-    assert_equal("\n@property CGFloat width;", @parser.parse("\n@property CGFloat width;").text_value)
+    prop1 = parse("\n@property (nonatomic, retain) <Bob> CGFloat width;")
+    assert_equal("width", prop1.name)    
   end
 end

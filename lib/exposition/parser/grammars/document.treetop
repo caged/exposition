@@ -4,20 +4,4 @@ grammar Document
   rule contents
     (property / line_break / space / char)+ <Doc>
   end
-  
-  rule doc_instance
-    property_doc
-  end
-  
-  rule property_doc
-    property
-  end
-  
-  rule keyword_line
-    keyword text line_break
-  end
-  
-  rule start
-    comment_start space*
-  end
 end

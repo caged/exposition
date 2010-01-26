@@ -2,14 +2,14 @@ require '../lib/exposition'
 
 str = File.read('../test/samples/TTPhotoViewController.h')
 
-# def pre_process(str)
-#   string = str.gsub(/\r\n/, "\n")
-#   string = string.split("\n").map do |line|
-#     line.gsub(/\s+$/, '')
-#   end.join("\n")
-#   string = ("\n" << string) unless string =~ /\n^/
-#   string
-# end
+def pre_process(str)
+  string = str.gsub(/\r\n/, "\n")
+  string = string.split("\n").map do |line|
+    line.gsub(/\s+$/, '')
+  end.join("\n")
+  string = ("\n" << string) unless string =~ /\n^/
+  string
+end
 # 
 # def parse_doc(str)
 #   parser = DocumentParser.new
@@ -19,13 +19,18 @@ str = File.read('../test/samples/TTPhotoViewController.h')
 # end
 
 begin
-  samples = Dir['../test/samples/*.h'].collect { |f| File.expand_path(f) }  
-  parser = Exposition::Parser.new(*samples)
-  docs = parser.parse
-  docs.each do |doc|
-    puts doc.name
-    pp doc.parse_tree.properties.collect { |p| p.text_value }
-  end
-rescue Exposition::ParseError => e
+  # samples = Dir['../test/samples/*.h'].collect { |f| File.expand_path(f) }  
+  # parser = Exposition::Parser.new(*samples)
+  # docs = parser.parse
+  # docs.each do |doc|
+  #   puts doc.name
+  #   pp doc.parse_tree.properties.collect { |p| p.attributes }
+  # end
+  parser = PropertiesParser.new
+  pp parser
+  # puts parser.parse("\n@property(nonatomic,retain) id<SomeType, SomeOtherType> centerPhoto;")
+  str = pre_process(File.read('../test/samples/TTStyledText.h'))
+  puts parser.parse(str)
+rescue StandardError => e
   puts e.message
 end

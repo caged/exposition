@@ -1,7 +1,7 @@
 grammar Properties
   include Basic
   rule property
-    line_break "@property" space* attributes* property_type protocol* <Property>
+    line_break "@property" space* attrs:attributes* property_type protocol* space* prop_name:valid_name &';' <Property>
   end
   
   rule attributes
