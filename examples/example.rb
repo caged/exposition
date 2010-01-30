@@ -28,7 +28,8 @@ begin
   # end
   parser = PropertiesParser.new
   str = "\n@property (nonatomic, assign, getter=isSomethingTrue, setter=comfirmSomethingIsTrue) BOOL somethingTrue;"
-  #str = "\n@property NSInteger someInt;"
+  str = "\n@property NSInteger someInt;"
+  str = "\n@property EXSomeClass *someClass;"
   result = parser.parse(str)
   unless result    
     puts "\n" << parser.terminal_failures.join("\n") << "\n"

@@ -10,7 +10,7 @@ module Properties
     end
     
     def type
-      property_type.text_value.strip
+      property_type.type.text_value.strip
     end
     
     def getter
