@@ -5,15 +5,46 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'exposition'
 
+class Treetop::Runtime::SyntaxNode 
+  def method_missing(method, *args)
+    raise "Node representing '#{text_value}' does not respond to '#{method}'"
+  end
+end
+
 class Test::Unit::TestCase
-  include Basic
-  def parse(str)
-    result = @parser.parse(str)
+  def parse(input)
+    result = @parser.parse(input)
     unless result
       puts "\n" << @parser.terminal_failures.join("\n") << "\n"
     end
     assert !result.nil?
     result
+  end
+  
+  def blank_line
+    "\n * \n "
+  end
+  
+  def parse_file(filename)
+    path = File.expand_path(File.join(File.dirname(__FILE__), "..", "fixtures", filename))
+    file = File.open(path){ |f| f.read }
+    file.gsub!(/\r\n/, "\n")
+    file = file.split("\n").map do |line|
+      line.gsub(/\s+$/, '')
+    end.join("\n")
+    parse(file)
+  end
+  
+  def assert_parsed(input)
+    assert !parse(input).nil?
+  end
+  
+  def assert_file_parsed(filename)
+    assert !parse_file(filename).nil?
+  end
+  
+  def assert_not_parsed(input)
+    assert @parser.parse(input).nil?
   end
 end
 

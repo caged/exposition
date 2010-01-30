@@ -1,11 +1,12 @@
 grammar Properties
   include Basic
+  
   rule property
-    line_break "@property" space* attrs:attributes* property_type protocol* space* prop_name:valid_name &';' <Property>
+    line_break space* "@property" space* attrs:attributes* property_type protocol* space* prop_name:valid_name ';' <Property>
   end
   
   rule attributes
-    '(' space* (attribute_values ','* space*)+ space* ')'
+    '(' space* (attribute_values ','* space*)+ space* ')' space* / space
   end
   
   rule attribute_values
@@ -17,7 +18,7 @@ grammar Properties
   end
   
   rule property_type
-    space ('IBOutlet' / garbage_collection_modifiers)* space* type:valid_name space* '*'*
+    ('IBOutlet' / garbage_collection_modifiers)* space* type:valid_name space* '*'*
   end
   
   rule garbage_collection_modifiers

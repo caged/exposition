@@ -1,14 +1,14 @@
 require '../lib/exposition'
 
-str = File.read('../test/samples/TTPhotoViewController.h')
 
-def pre_process(str)
-  string = str.gsub(/\r\n/, "\n")
+#str = File.read('../test/samples/TTPhotoViewController.h')
+
+def prepare_content_for_parse(content)
+  string = content.gsub(/\r\n/, "\n")
   string = string.split("\n").map do |line|
     line.gsub(/\s+$/, '')
   end.join("\n")
-  string = ("\n" << string) unless string =~ /\n^/
-  string
+  "\n#{string}\n"
 end
 # 
 # def parse_doc(str)
@@ -27,10 +27,14 @@ begin
   #   pp doc.parse_tree.properties.collect { |p| p.attributes }
   # end
   parser = PropertiesParser.new
-  pp parser
-  # puts parser.parse("\n@property(nonatomic,retain) id<SomeType, SomeOtherType> centerPhoto;")
-  str = pre_process(File.read('../test/samples/TTStyledText.h'))
-  puts parser.parse(str)
-rescue StandardError => e
+  str = "\n@property (nonatomic, assign, getter=isSomethingTrue, setter=comfirmSomethingIsTrue) BOOL somethingTrue;"
+  #str = "\n@property NSInteger someInt;"
+  result = parser.parse(str)
+  unless result    
+    puts "\n" << parser.terminal_failures.join("\n") << "\n"
+  else
+   pp result.type
+  end
+rescue ParseError => e
   puts e.message
 end

@@ -8,5 +8,19 @@ module Properties
     def name
       prop_name.text_value.strip
     end
+    
+    def type
+      property_type.text_value.strip
+    end
+    
+    def getter
+      value = attributes.detect { |att| att =~ /^getter=/i }
+      value.nil? ? name : value.split('=').last.strip
+    end
+    
+    def setter
+      value = attributes.detect { |att| att =~ /^setter=/i }
+      value.nil? ? "#{name}=" : "#{value.split('=').last.strip}="
+    end
   end
 end
