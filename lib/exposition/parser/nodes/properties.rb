@@ -22,5 +22,9 @@ module Properties
       value = attributes.detect { |att| att =~ /^setter=/i }
       value.nil? ? "#{name}=" : "#{value.split('=').last.strip}="
     end
+    
+    def ib_outlet?
+      property_type.text_value.include?('IBOutlet')
+    end
   end
 end

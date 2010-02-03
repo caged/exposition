@@ -46,7 +46,7 @@ context "Parsing Properties Declared in Header Files" do
     assert(prop2.attributes.empty?)
   end
   
-  test  'parses properties without attributes' do
+  test 'parses properties without attributes' do
     prop = parse("\n@property EXSomeClass *someClass;")
     prop2 = parse("\n@property NSInteger someInt;")
     
@@ -63,11 +63,39 @@ context "Parsing Properties Declared in Header Files" do
     assert(prop2.attributes.empty?)
   end
   
-  test  'parses custom getters and setters' do
+  test 'parses custom getters and setters' do
     prop = parse("\n@property (nonatomic, assign, getter=isSomethingTrue, setter=comfirmSomethingIsTrue) BOOL somethingTrue;")
     
     assert_equal('somethingTrue', prop.name)
     assert_equal('isSomethingTrue', prop.getter)
     assert_equal('comfirmSomethingIsTrue=', prop.setter)
+  end
+  
+  test 'parses iboutlet properties' do
+    prop = parse("\n@property (nonatomic, retain) IBOutlet NSButton *someButton;")
+    
+    assert_equal('NSButton', prop.type)
+    assert(prop.ib_outlet?)
+    assert_equal('someButton', prop.name)
+  end
+  
+  test 'parses modifiers' do
+    prop1 = parse("\n@property(retain) __attribute__((NSObject)) CFDictionaryRef myDictionary;")
+    prop2 = parse("\n@property (nonatomic, retain) __weak Link *parent;")
+    prop3 = parse("\n@property (nonatomic, retain) __strong Link *parent;")
+    
+    assert_equal('myDictionary', prop1.name)
+    assert_equal('parent', prop2.name)
+    assert_equal('parent', prop3.name)
+    
+    assert_equal('CFDictionaryRef', prop1.type)
+    assert_equal('Link', prop2.type)
+    assert_equal('Link', prop3.type)
+    
+    assert_equal(['retain'], prop1.attributes) 
+    assert_equal(['nonatomic', 'retain'], prop2.attributes)   
+    assert_equal(['nonatomic', 'retain'], prop3.attributes)   
+      
+    
   end
 end

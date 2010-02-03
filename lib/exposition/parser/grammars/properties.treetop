@@ -18,7 +18,11 @@ grammar Properties
   end
   
   rule property_type
-    ('IBOutlet' / garbage_collection_modifiers)* space* type:valid_name space* '*'*
+    (ib_outlet / garbage_collection_modifiers)* space* type:valid_name space* '*'*
+  end
+  
+  rule ib_outlet
+    'IBOutlet'
   end
   
   rule garbage_collection_modifiers
