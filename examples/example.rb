@@ -32,10 +32,10 @@ begin
   result = parser.parse(str)
   unless result    
     puts "\n" << parser.terminal_failures.join("\n") << "\n"
+    raise Exposition::ParseError, parser
   else
-   pp result.type
+   pp result
   end
 rescue Exposition::ParseError => e
-  pp e
   puts e.message
 end

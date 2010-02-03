@@ -14,8 +14,10 @@ module Properties
     end
     
     def getter
-      value = attributes.detect { |att| att =~ /^getter=/i }
-      value.nil? ? name : value.split('=').last.strip
+      unless readonly?      
+        value = attributes.detect { |att| att =~ /^getter=/i }
+        value.nil? ? name : value.split('=').last.strip
+      end
     end
     
     def setter
@@ -25,6 +27,10 @@ module Properties
     
     def ib_outlet?
       property_type.text_value.include?('IBOutlet')
+    end
+    
+    def readonly?
+      attributes.include?('readonly')
     end
   end
 end
