@@ -26,16 +26,19 @@ end
 #   puts e.message
 # end
 
-begin
-  parser = MethodsParser.new
-  str = "\n- (TTPhotoView*)createPhotoView;"
-  result = parser.parse(str)
-  unless result    
-    puts "\n" << parser.terminal_failures.join("\n") << "\n"
-    raise Exposition::ParseError, parser
-  else
-   pp result
-  end
-rescue Exposition::ParseError => e
-  puts e.message
-end
+#pp *Dir['../test/samples/*.h']
+Exposition::Documentation.generate!(*Dir['../test/samples/*.h'])
+
+# begin
+#   parser = MethodsParser.new
+#   str = "\n- (TTPhotoView*)createPhotoView;"
+#   result = parser.parse(str)
+#   unless result    
+#     puts "\n" << parser.terminal_failures.join("\n") << "\n"
+#     raise Exposition::ParseError, parser
+#   else
+#    pp result
+#   end
+# rescue Exposition::ParseError => e
+#   puts e.message
+# end

@@ -32,5 +32,9 @@ module Properties
     def readonly?
       attributes.include?('readonly')
     end
+    
+    def to_s
+      text_value.strip
+    end
   end
 end

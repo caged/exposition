@@ -1,6 +1,7 @@
 grammar Document
   include Basic
   include Properties
+  include Methods
   rule contents
     (property / line_break / space / char)+ <Doc>
   end

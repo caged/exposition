@@ -5,42 +5,30 @@ require 'parser/nodes'
 require 'parser/grammars'
 
 module Exposition
-  class SourceFile < Struct.new(:name, :location, :source, :parse_tree)
-    def name
-      File.basename(location)
-    end
-  end
-  
-  class Parser
-    def initialize(*source_files)
-      @options = source_files.last.is_a?(Hash) ? source_files.pop : {}
-      @source_files = source_files
+  class Parser    
+    def initialize
       @parser = DocumentParser.new
-      @parsed_docs = []
       @percent_complete = 0
       @complete = false
     end
     
-    def parse
-      @complete = false
-      @source_files.each do |file|
-        content = File.read(file)
-        prepared_content = prepare_content_for_parse(content)
-        doc = @parser.parse(prepared_content)
-        raise ParseError, @parser unless doc
-        
-        sf = SourceFile.new
-        sf.location = file
-        sf.parse_tree = doc
-        sf.source = content
-        @parsed_docs << sf
-      end
-      @complete = true
-      @parsed_docs
+    def parse(str)
+      tree = @parser.parse(prepare_content_for_parse(str))
+      raise ParseError, @parser if tree.nil?
+      tree
     end
     
-    def completed?
+    def complete?
       @complete
+    end
+    
+    def completion_percentage
+      if @parser.index
+        ratio = @parser.index.to_f / @parser.input.size.to_f
+        percentage = (ratio * 100).floor
+        @percent_complete = percentage if percentage > @percent_complete
+      end
+      @percent_complete.to_s
     end
     
     def prepare_content_for_parse(content)
