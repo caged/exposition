@@ -3,4 +3,5 @@ $: << dir
 
 Treetop.load File.join(dir, 'grammars', 'basic')
 Treetop.load File.join(dir, 'grammars', 'properties')
+Treetop.load File.join(dir, 'grammars', 'methods')
 Treetop.load File.join(dir, 'grammars', 'document')

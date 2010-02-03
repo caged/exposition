@@ -3,4 +3,5 @@ $: << dir
 
 require 'nodes/basic'
 require 'nodes/properties'
+require 'nodes/methods'
 require 'nodes/document'
