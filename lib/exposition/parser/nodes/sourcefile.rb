@@ -1,4 +1,4 @@
-module Basic
+module SourceFile
   class General < Treetop::Runtime::SyntaxNode; end
   
   class Text          < General; end

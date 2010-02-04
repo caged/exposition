@@ -11,33 +11,36 @@ def prepare_content_for_parse(content)
   "\n#{string}\n"
 end
 
-# begin
-#   parser = PropertiesParser.new
-#   str = "\n@property (nonatomic, assign, getter=isSomethingTrue, setter=comfirmSomethingIsTrue) BOOL somethingTrue;"
-#   str = "\n@property NSInteger someInt;"
-#   str = "\n@property EXSomeClass *someClass;"
-#   result = parser.parse(str)
-#   unless result    
-#     puts "\n" << parser.terminal_failures.join("\n") << "\n"
-#   else
-#    pp result.type
-#   end
-# rescue ParseError => e
-#   puts e.message
-# end
 
-#pp *Dir['../test/samples/*.h']
-Exposition::Documentation.generate!(*Dir['../test/samples/*.h'])
+samples = *Dir['../test/samples/*.h']
+#bwtoolkit = Dir['/Users/justin/dev/thirdparty/cocoa/bwtoolkit/*.h']
+three20   = Dir['/Users/justin/dev/thirdparty/iphone/three20/src/Three20/*.h']
+
+Exposition::Documentation.generate!(*samples)
 
 # begin
 #   parser = MethodsParser.new
-#   str = "\n- (TTPhotoView*)createPhotoView;"
-#   result = parser.parse(str)
+#   content = "\n- (id)performSelector:(SEL)selector withObject:(id)p1 withObject:(id)p2 withObject:(id)p3 withObject:(id)p4;"
+#   pp content
+#   result = parser.parse(content)
 #   unless result    
 #     puts "\n" << parser.terminal_failures.join("\n") << "\n"
 #     raise Exposition::ParseError, parser
 #   else
-#    pp result
+#    pp result.elements
+#   end
+# rescue Exposition::ParseError => e
+#   puts e.message
+# end
+
+# begin
+#   parser = DocumentParser.new
+#   result = parser.parse(File.read(three20.first))
+#   unless result    
+#     puts "\n" << parser.terminal_failures.join("\n") << "\n"
+#     raise Exposition::ParseError, parser
+#   else
+#    puts result.methods.collect { |m| m.to_s }
 #   end
 # rescue Exposition::ParseError => e
 #   puts e.message

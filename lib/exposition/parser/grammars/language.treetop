@@ -1,0 +1,19 @@
+grammar Language
+  include SourceFile
+  
+  rule type
+    '(' space* type_name '*'? ')'
+  end
+  
+  rule type_name
+    [_a-zA-Z0-9]+
+  end
+  
+  rule protocol
+    '<' (space* type:type_name ','* space*)+ space* '>' <Protocol>
+  end
+  
+  rule ib_outlet
+    'IBOutlet'
+  end
+end

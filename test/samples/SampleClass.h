@@ -14,4 +14,6 @@
 @property (nonatomic, retain) __strong Link *parent;
 @property(nonatomic,retain) id<SomeType> centerPhoto;
 @property(nonatomic,retain) id<SomeType, SomeOtherType> centerPhoto;
+
+-(TTThumbsViewController *) createThumbsViewController;
 @end

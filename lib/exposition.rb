@@ -13,7 +13,8 @@ require 'exposition/parser'
 module Exposition
   class Documentation
     def initialize(*source_files)
-      @options = source_files.last.is_a?(Hash) ? source_files.pop : {}
+      options_hash = source_files.last.is_a?(Hash) ? source_files.pop : {}
+      @options = {:stats => true}.merge(options_hash)
       @source_files = source_files
       @parsed_docs = []
       @parser = Parser.new
@@ -24,9 +25,13 @@ module Exposition
     end
     
     def parse
-      puts "Parsing #{@source_files}"
-      puts 'Processing... 0%'
-      @source_files.each do |file|
+      puts "Parsing #{@source_files.collect { |sf| File.basename(sf)  }.join(', ')}\n\n\n"
+      @source_files.each_with_index do |file, index|
+        progress = '=' * (index + 1) << ">"
+        progress << "]".rjust(@source_files.size - progress.size, "+")
+        progress = " [" << progress
+        puts "\c[[FParsing #{index + 1} of #{@source_files.size}:" << red(progress)
+        
         content = File.read(file)
         doc = @parser.parse(content)
         raise ParseError, @parser unless doc
@@ -37,26 +42,47 @@ module Exposition
         sf.source = content
         @parsed_docs << sf
       end
-      
-      @parsed_docs.each do |doc|
-        puts "\n"
-        puts red(doc.name)
-        puts doc.parse_tree.properties
+      puts "\n\n\n"
+      show_stats if @options[:stats]
+    end
+    
+    def show_stats
+      max_name_length = @parsed_docs.collect { |pd| pd.name.size }.max
+      cols = `tput cols`.to_i
+      headers = {
+        :name => bold(red('NAME'.center(max_name_length + 2))),
+        :properties => bold(red('PROPERTIES').center(30)),
+        :class_methods => bold(red('CLASS METHODS').center(30)),
+        :instance_methods => bold(red('INSTANCE METHODS').center(30))
+      }
+      @parsed_docs.each do |pd|
+        objc = pd.parse_tree
+        
+        # HEADER
+        puts '+' << ('-' * (cols - 2)) << '+'
+        header = "#{headers[:name]} | #{headers[:properties]} | #{headers[:class_methods]} | #{headers[:instance_methods]}"
+        puts header
+        # STATS 
+        puts '+' << ('-' * (cols - 2)) << '+'
+        name = pd.name.ljust(max_name_length, ' ')
+        puts "| #{blue(name)} | #{objc.properties.size.to_s.center(21)} | #{objc.class_methods.size.to_s.center(21)} | #{objc.instance_methods.size.to_s.center(21)}"
+       
+        # PROPERTIES
+        puts '+' << ('-' * (cols - 2)) << '+'
+        puts objc.properties.collect { |p| "| #{p.to_s.ljust(cols - 4)} |"}
+        
+        # CLASS METHODS
+        puts '+' << ('-' * (cols - 2)) << '+'
+        puts objc.class_methods.collect { |cm| "| #{cm.name.ljust(cols - 4)} |"}
+       
+        # INSTANCE METHODS
+        puts '+' << ('-' * (cols - 2)) << '+'
+        puts objc.instance_methods.collect { |im| "| #{im.name.ljust(cols - 4)} |"}
+        
+        # FOOTER
+        puts '+' << ('-' * (cols - 2)) << '+'
+        puts "\n\n"
       end
-      # Thread.new(@parser) do |parser|
-      # 
-      #   # 
-      #   # i = 0        
-      #   # begin          
-      #   #   dots = ('.' * i) << (' ' * (3-i)) 
-      #   #   puts "\c[[F    Processing#{dots} #{parser.completion_percentage}"
-      #   #   i =  i == 3 ? 0 : i + 1
-      #   #   sleep 0.1
-      #   # end until parser.complete?
-      #   # start_time = Time.new
-      #   # @parsed_docs = @parser.parse
-      #   # puts "\c[[F    Parsing completed in #{Time.new - start_time} seconds.\n\n"
-      # end
     end
   end
   

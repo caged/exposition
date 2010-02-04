@@ -1,0 +1,28 @@
+grammar Methods
+  include SourceFile
+  include Language
+  
+  rule method
+    instance_method / class_method
+  end
+  
+  rule instance_method
+    line_break '-' method_body <InstanceMethod>
+  end
+  
+  rule class_method
+    line_break '+' method_body <ClassMethod>
+  end
+  
+  rule method_body
+    space* '(' space* type_name space* '*'? space* ')' space* method_args ';'
+  end
+  
+  rule method_args
+    keyed_arg+ / type_name
+  end
+  
+  rule keyed_arg
+    line_break* space* type_name ':' space* type type_name space*
+  end
+end

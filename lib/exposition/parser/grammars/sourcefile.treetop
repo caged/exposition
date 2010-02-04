@@ -1,4 +1,4 @@
-grammar Basic
+grammar SourceFile
   rule test_base
     (blank_line / text_line / comment_start / comment_end / line / line_break / space / char)+
   end
@@ -27,16 +27,20 @@ grammar Basic
     line_break space* "*/" space* line_break <CommentEnd>
   end
   
-  rule valid_name
-    [_a-zA-Z0-9]+
-  end
-
   rule line_break
     [\n] <LineBreak>
   end
 
   rule line_separator
     "*"
+  end
+  
+  rule eol
+    "\n" / eof
+  end
+  
+  rule eof
+    !.
   end
 
   rule char

@@ -1,8 +1,9 @@
 grammar Properties
-  include Basic
+  include SourceFile
+  include Language
   
   rule property
-    line_break space* "@property" space* attrs:attributes* property_type protocol* space* prop_name:valid_name ';' <Property>
+    line_break space* "@property" space* attrs:attributes* property_type protocol* space* prop_name:type_name ';' <Property>
   end
   
   rule attributes
@@ -14,15 +15,11 @@ grammar Properties
   end
     
   rule attributes_getter_setter
-    ('g' / 's') 'etter' space* '=' space* prop_name:valid_name+
+    ('g' / 's') 'etter' space* '=' space* prop_name:type_name+
   end
   
   rule property_type
-    (ib_outlet / garbage_collection_modifiers)* space* type:valid_name space* '*'*
-  end
-  
-  rule ib_outlet
-    'IBOutlet'
+    (ib_outlet / garbage_collection_modifiers)* space* type:type_name space* '*'*
   end
   
   rule garbage_collection_modifiers
@@ -30,10 +27,6 @@ grammar Properties
   end
   
   rule core_foundation_property
-    '__attribute__((' type:valid_name+ '))'
-  end
-  
-  rule protocol
-    '<' (space* type:valid_name ','* space*)+ space* '>'
+    '__attribute__((' type:type_name+ '))'
   end
 end

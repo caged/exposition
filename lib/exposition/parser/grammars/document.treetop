@@ -1,8 +1,8 @@
 grammar Document
-  include Basic
+  include SourceFile
   include Properties
   include Methods
   rule contents
-    (property / line_break / space / char)+ <Doc>
+    (property / instance_method / class_method / line_break / space / char)+ <Doc>
   end
 end
