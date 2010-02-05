@@ -1,16 +1,20 @@
 grammar Language
   include SourceFile
   
-  rule type
-    '(' space* type_name '*'? ')'
+  rule obj_type
+    space* '(' space* type_or_protocol:(type_name protocol / type_name space* '*'?) space* ')' space*
   end
   
   rule type_name
     [_a-zA-Z0-9]+
   end
   
+  rule arg_name
+    [_a-zA-Z0-9]+
+  end
+  
   rule protocol
-    '<' (space* type:type_name ','* space*)+ space* '>' <Protocol>
+    space* '<' type_names:(space* type_name ','* space* <Protocol>)+ space* '>' space* <Protocols>
   end
   
   rule ib_outlet

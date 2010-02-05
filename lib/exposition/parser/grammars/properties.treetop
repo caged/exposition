@@ -15,11 +15,11 @@ grammar Properties
   end
     
   rule attributes_getter_setter
-    ('g' / 's') 'etter' space* '=' space* prop_name:type_name+
+    ('g' / 's') 'etter' space* '=' space* prop_name:type_name
   end
   
   rule property_type
-    (ib_outlet / garbage_collection_modifiers)* space* type:type_name space* '*'*
+    (ib_outlet / garbage_collection_modifiers)* space* type_name space* '*'*
   end
   
   rule garbage_collection_modifiers
@@ -27,6 +27,6 @@ grammar Properties
   end
   
   rule core_foundation_property
-    '__attribute__((' type:type_name+ '))'
+    '__attribute__((' type:type_name '))'
   end
 end
