@@ -10,7 +10,7 @@ context "Parsing Methods Declared in Header Files" do
     m2 = parse("\n-(TTPhotoView *) createPhotoView;")
     
     assert_equal("- (TTPhotoView*)createPhotoView;", m1.name)
-    assert_equal("- (TTPhotoView *) createPhotoView;", m2.name)
+    assert_equal("- (TTPhotoView *)createPhotoView;", m2.name)
   end
   
   test 'parses methods with arguments' do
@@ -27,7 +27,7 @@ context "Parsing Methods Declared in Header Files" do
     assert_equal("- (void)didMoveToPhoto:fromPhoto;", m2.name)
     
     assert_equal(['TTPhoto'], m1.arguments.first.conforms_to.collect { |pc| pc.name })
-    assert_equal(['TTPhoto', 'AnotherProtocol', 'SomethingElse'], m1.arguments.first.conforms_to.collect { |pc| pc.name })
+    assert_equal(['TTPhoto', 'AnotherProtocol', 'SomethingElse'], m2.arguments.first.conforms_to.collect { |pc| pc.name })
   end
   
   test 'parses methods with variable number of arguments' do

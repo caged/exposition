@@ -1,11 +1,10 @@
 module Methods      
   class Method < Treetop::Runtime::SyntaxNode
     def name
-      matches = []
-      to_s.sub(/(\-|\+)\(/, '- (').scan /\s(.+?)(:|;)/ do |match|
-        matches << match[0].to_s.strip
-      end
-      "#{to_s[0..0]} #{matches.join(':')};"
+      mbody = arguments.collect { |a| a.type_name.text_value.to_s }.join(':')
+      mbody = method_body.method_args.text_value if mbody.empty?
+      mtype = is_a?(ClassMethod) ? '+' : '-'
+      "#{mtype} #{method_body.return_type.text_value.strip}#{mbody};"
     end
     
     def to_s

@@ -4,15 +4,11 @@ module Language
     def each
       type_names.elements.each { |e| yield e }
     end
-    
-    def zomg
-      puts "zOMG"
-    end
   end
   
   class Protocol < Treetop::Runtime::SyntaxNode
     def name
-      text_value
+      type_name.text_value.strip
     end
   end
 end

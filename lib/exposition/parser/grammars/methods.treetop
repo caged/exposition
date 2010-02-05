@@ -15,7 +15,7 @@ grammar Methods
   end
   
   rule method_body
-    obj_type method_args ';'
+    return_type:obj_type method_args ';'
   end
   
   rule method_args
