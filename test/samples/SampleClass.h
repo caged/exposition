@@ -21,4 +21,5 @@
 
 -(TTThumbsViewController *) createThumbsViewController;
 - (id<FooBar>)someMethodThatReturnsSomethingThatConformsToAProtocol;
+- (void) appendObjects:(id) firstObject,...;
 @end

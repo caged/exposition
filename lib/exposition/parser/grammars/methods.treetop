@@ -19,10 +19,14 @@ grammar Methods
   end
   
   rule method_args
-    keyed_arg+ <Arguments> / type_name
+    keyed_arg ',' space* variable_arg space* <Arguments> / keyed_arg+ <Arguments> / type_name
   end
   
   rule keyed_arg
-    line_break* space* type_name ':' arg_type:obj_type arg_name space* <Argument>
+    line_break* space* arg_body:type_name ':' arg_type:obj_type arg_name space* <Argument>
+  end
+  
+  rule variable_arg
+    '...' <VariableArgument>
   end
 end
