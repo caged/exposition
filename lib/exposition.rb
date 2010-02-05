@@ -38,7 +38,7 @@ module Exposition
         
         sf = SourceFile.new
         sf.location = file
-        sf.parse_tree = doc
+        sf.info = doc
         sf.source = content
         @parsed_docs << sf
       end
@@ -47,6 +47,10 @@ module Exposition
     end
     
     def show_stats
+      total_class_methods     = sum(@parsed_docs.collect { |doc| doc.info.class_methods.size })
+      total_instance_methods  = sum(@parsed_docs.collect { |doc| doc.info.instance_methods.size })
+      total_properties        = sum(@parsed_docs.collect { |doc| doc.info.properties.size })
+      
       max_name_length = @parsed_docs.collect { |pd| pd.name.size }.max
       cols = `tput cols`.to_i
       headers = {
@@ -55,8 +59,9 @@ module Exposition
         :class_methods => bold(red('CLASS METHODS').center(30)),
         :instance_methods => bold(red('INSTANCE METHODS').center(30))
       }
+      
       @parsed_docs.each do |pd|
-        objc = pd.parse_tree
+        objc = pd.info
         
         # HEADER
         puts '+' << ('-' * (cols - 2)) << '+'
@@ -83,10 +88,20 @@ module Exposition
         puts '+' << ('-' * (cols - 2)) << '+'
         puts "\n\n"
       end
+      
+      puts yellow("=" * cols)
+      puts "#{blue(total_class_methods.to_s)} TOTAL CLASS METHODS"
+      puts "#{blue(total_instance_methods.to_s)} TOTAL INSTANCE METHODS"
+      puts "#{blue(total_properties.to_s)} TOTAL PROPERTIES"
+      puts yellow("=" * cols)
+    end
+    
+    def sum(arr)
+      arr.inject( 0 ) { |sum,x| sum+x }
     end
   end
   
-  class SourceFile < Struct.new(:name, :location, :source, :parse_tree)
+  class SourceFile < Struct.new(:name, :location, :source, :info)
     def name
       File.basename(location)
     end

@@ -1,3 +1,7 @@
+@protocol FooBar
+
+@end
+
 @interface SampleClass : NSObject
 {
     
@@ -16,4 +20,5 @@
 @property(nonatomic,retain) id<SomeType, SomeOtherType> centerPhoto;
 
 -(TTThumbsViewController *) createThumbsViewController;
+- (id<FooBar>)someMethodThatReturnsSomethingThatConformsToAProtocol;
 @end

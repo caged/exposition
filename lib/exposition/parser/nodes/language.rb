@@ -1,4 +1,8 @@
 module Language
+  class ObjectType
+    
+  end
+  
   class Protocols < Treetop::Runtime::SyntaxNode
     include Enumerable
     def each

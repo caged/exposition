@@ -7,13 +7,17 @@ module Methods
       "#{mtype} #{method_body.return_type.text_value.strip}#{mbody};"
     end
     
-    def to_s
-      text_value.strip
-    end
-    
     def arguments
       args = method_body.elements.select { |e| e.is_a?(Arguments) }.first
       args.nil? ? [] : args
+    end
+    
+    def return_type
+      method_body.return_type.text_value
+    end
+    
+    def to_s
+      text_value.strip
     end
   end
   

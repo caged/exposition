@@ -2,6 +2,7 @@ grammar Document
   include SourceFile
   include Properties
   include Methods
+  
   rule contents
     (property / instance_method / class_method / line_break / space / char)+ <Doc>
   end
