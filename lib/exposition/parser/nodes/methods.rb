@@ -13,11 +13,11 @@ module Methods
     end
     
     def return_type
-      method_body.return_type.text_value
+      method_body.return_type
     end
     
     def to_s
-      text_value.strip
+      text_value.strip.gsub(/\s+/, ' ')
     end
   end
   
@@ -44,14 +44,7 @@ module Methods
     end
     
     def type
-      arg_type.text_value.strip
-    end
-    
-    def conforms_to
-      pcalls = arg_type.type_or_protocol.elements.select do |e| 
-        e.is_a?(Protocols)
-      end
-      pcalls.any? ? pcalls.first : []
+      arg_type
     end
   end
 end

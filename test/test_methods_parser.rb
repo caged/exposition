@@ -15,7 +15,6 @@ context "Parsing Methods Declared in Header Files" do
   
   test 'parses methods with arguments' do
     m1 = parse("\n- (id)performSelector:(SEL)selector withObject:(id)p1 withObject:(id)p2 withObject:(id)p3;")
-    
     assert_equal("- (id)performSelector:withObject:withObject:withObject;", m1.name)
   end
   
@@ -26,8 +25,15 @@ context "Parsing Methods Declared in Header Files" do
     assert_equal("- (void)didMoveToPhoto:fromPhoto;", m1.name)
     assert_equal("- (void)didMoveToPhoto:fromPhoto;", m2.name)
     
-    assert_equal(['TTPhoto'], m1.arguments.first.conforms_to.collect { |pc| pc.name })
-    assert_equal(['TTPhoto', 'AnotherProtocol', 'SomethingElse'], m2.arguments.first.conforms_to.collect { |pc| pc.name })
+    assert_equal('TTPhoto', m1.arguments.first.type.conforms_to.first.name)
+    assert_equal(['TTPhoto', 'AnotherProtocol', 'SomethingElse'], m2.arguments.first.type.conforms_to.collect { |pc| pc.name })
+  end
+  
+  test 'parses methods broken into seperate lines' do
+    m1 = parse("\n- (void)didMoveToPhoto:(id<TTPhoto, AnotherProtocol, SomethingElse>)photo 
+                      fromPhoto:(id<TTPhoto>)fromPhoto;")
+    assert_equal("- (void)didMoveToPhoto:(id<TTPhoto, AnotherProtocol, SomethingElse>)photo fromPhoto:(id<TTPhoto>)fromPhoto;", m1.to_s)
+    assert_equal("- (void)didMoveToPhoto:fromPhoto;", m1.name)
   end
   
   test 'parses methods with variable number of arguments' do

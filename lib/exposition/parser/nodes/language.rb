@@ -1,6 +1,15 @@
 module Language
-  class ObjectType
-    
+  class ObjectType < Treetop::Runtime::SyntaxNode
+    def name
+      type_or_protocol.type_name.text_value
+    end
+        
+    def conforms_to
+      pcalls = type_or_protocol.elements.select do |e| 
+        e.is_a?(Protocols)
+      end
+      pcalls.any? ? pcalls.first : []
+    end
   end
   
   class Protocols < Treetop::Runtime::SyntaxNode
