@@ -1,10 +1,10 @@
-@protocol FooBar
-
-@end
-
 @interface SampleClass : NSObject
+    <EXSomeProtocol, EXSomeOtherProtocol, EXSomeDifferentProtocol>
 {
-    
+    NSString *_someString;
+    CGFloat someFloat;
+    id fooBar;
+    id<Bob, Jane, Tom> someConformingObject;
 }
 
 @property (nonatomic, retain) NSString *someString;

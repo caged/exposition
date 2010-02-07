@@ -36,8 +36,7 @@ module Exposition
       string = string.split("\n").map do |line|
         line.gsub(/\s+$/, '')
       end.join("\n")
-      string = ("\n" << string) unless string =~ /\n^/
-      string
+      "\n#{string}\n"
     end
   end
   

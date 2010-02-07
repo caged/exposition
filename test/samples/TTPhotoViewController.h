@@ -20,6 +20,10 @@
 
 @class TTScrollView, TTPhotoView, TTStyle;
 
+/**
+ * This is docmentation for TTPhotoViewController right here.
+ * I wonder if this will be parsed.
+ */
 @interface TTPhotoViewController : TTModelViewController
           <TTScrollViewDelegate, TTScrollViewDataSource, TTThumbsViewControllerDelegate> {
   id<TTPhotoSource> _photoSource;

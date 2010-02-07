@@ -13,6 +13,10 @@ module Properties
       property_type.type_name.text_value.strip
     end
     
+    def documentation
+      docs.to_s
+    end
+    
     def getter
       unless readonly?      
         value = attributes.detect { |att| att =~ /^getter=/i }

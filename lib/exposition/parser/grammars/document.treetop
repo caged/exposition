@@ -1,9 +1,9 @@
 grammar Document
   include SourceFile
-  include Properties
-  include Methods
+  include ObjCClasses
+  include Comments
   
   rule contents
-    (property / instance_method / class_method / line_break / space / char)+ <Doc>
+    (inline_comment / objc_class / empty_line / line_break / space / char)* <Doc>
   end
 end

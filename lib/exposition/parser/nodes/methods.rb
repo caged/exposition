@@ -28,6 +28,10 @@ module Methods
       method_body.return_type
     end
     
+    def documentation
+      docs.to_s
+    end
+    
     def to_s
       text_value.strip.gsub(/\s+/, ' ')
     end

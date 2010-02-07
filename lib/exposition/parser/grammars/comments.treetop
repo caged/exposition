@@ -1,0 +1,35 @@
+grammar Comments
+  include SourceFile
+  
+  rule test
+    (inline_comment / block_comment  / line_break / space / char)*
+  end
+  
+  rule inline_comment
+    (line_break '//' (space / char)* space* &line_break)+ <InlineComment> 
+  end
+  
+  rule block_comment
+    comment_start (block_comment_text_line / block_comment_blank_line)+ comment_end <BlockComment>
+  end
+  
+  rule comment_start
+    line_break space* "/**" space*
+  end
+  
+  rule comment_end
+    line_break space* "*/" space* &line_break
+  end
+  
+  rule block_comment_blank_line
+    line_break space* block_comment_line_seperator space* &(line_break)
+  end
+  
+  rule block_comment_text_line
+    line_break space* block_comment_line_seperator space text:char+ 
+  end
+  
+  rule block_comment_line_seperator
+    "*"
+  end
+end

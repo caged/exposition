@@ -1,0 +1,35 @@
+grammar ObjCClasses
+  include SourceFile
+  include Language
+  include Methods
+  include Properties
+  include Comments
+
+  rule objc_class
+    docs:block_comment? class_start class_decleration members:(property / instance_method / class_method / empty_line)+ class_end <ObjCClass>
+  end
+  
+  rule class_decleration
+    class_name:type_name space* ':' space* inheritance_and_protocol instance_variable_area
+  end
+  
+  rule inheritance_and_protocol
+    superclass:type_name line_break* pcalls:protocols?
+  end
+  
+  rule instance_variable_area
+    line_break* space* '{' instance_variables:(instance_variable / empty_line)* '}'
+  end
+  
+  rule instance_variable
+    line_break space* type_name pcalls:protocols? space* '*'? space* ivar_name:type_name ';' <InstanceVariable>
+  end
+  
+  rule class_start
+    line_break '@interface' space+ 
+  end
+    
+  rule class_end
+    line_break* '@end' space* line_break+
+  end
+end

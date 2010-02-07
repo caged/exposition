@@ -2,7 +2,7 @@ grammar Language
   include SourceFile
   
   rule obj_type
-    space* '(' space* type_or_protocol:(type_name protocol / type_name space* '*'?) space* ')' space* <ObjectType>
+    space* '(' space* type_or_protocol:(type_name protocols / type_name space* '*'?) space* ')' space* <ObjectType>
   end
   
   rule type_name
@@ -13,7 +13,7 @@ grammar Language
     [_a-zA-Z0-9]+
   end
   
-  rule protocol
+  rule protocols
     space* '<' type_names:(space* type_name ','* space* <Protocol>)+ space* '>' space* <Protocols>
   end
   

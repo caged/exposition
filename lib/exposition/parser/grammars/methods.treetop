@@ -1,17 +1,18 @@
 grammar Methods
   include SourceFile
   include Language
+  include Comments
   
   rule method
     instance_method / class_method
   end
   
   rule instance_method
-    line_break '-' method_body <InstanceMethod>
+    docs:block_comment? line_break '-' method_body <InstanceMethod>
   end
   
   rule class_method
-    line_break '+' method_body <ClassMethod>
+    docs:block_comment? line_break '+' method_body <ClassMethod>
   end
   
   rule method_body

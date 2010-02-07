@@ -47,14 +47,15 @@ module Exposition
     end
     
     def show_stats
-      total_class_methods     = sum(@parsed_docs.collect { |doc| doc.info.class_methods.size })
-      total_instance_methods  = sum(@parsed_docs.collect { |doc| doc.info.instance_methods.size })
-      total_properties        = sum(@parsed_docs.collect { |doc| doc.info.properties.size })
+      total_class_methods     = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.class_methods.size })})
+      total_instance_methods  = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.instance_methods.size })})
+      total_properties        = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.properties.size })})
       
       max_name_length = @parsed_docs.collect { |pd| pd.name.size }.max
       cols = `tput cols`.to_i
       headers = {
         :name => bold(red('NAME'.center(max_name_length + 2))),
+        :classes => bold(red('CLASSES'.center(30))),
         :properties => bold(red('PROPERTIES').center(30)),
         :class_methods => bold(red('CLASS METHODS').center(30)),
         :instance_methods => bold(red('INSTANCE METHODS').center(30))
@@ -63,26 +64,31 @@ module Exposition
       @parsed_docs.each do |pd|
         objc = pd.info
         
+        klasses           = objc.objc_classes
+        properties        = klasses.collect { |c| c.properties }.flatten
+        instance_methods  = klasses.collect { |c| c.instance_methods }.flatten
+        class_methods     = klasses.collect { |c| c.class_methods }.flatten
+        
         # HEADER
         puts '+' << ('-' * (cols - 2)) << '+'
-        header = "#{headers[:name]} | #{headers[:properties]} | #{headers[:class_methods]} | #{headers[:instance_methods]}"
+        header = "#{headers[:name]} | #{headers[:classes]} | #{headers[:properties]} | #{headers[:class_methods]} | #{headers[:instance_methods]}"
         puts header
         # STATS 
         puts '+' << ('-' * (cols - 2)) << '+'
         name = pd.name.ljust(max_name_length, ' ')
-        puts "| #{blue(name)} | #{objc.properties.size.to_s.center(21)} | #{objc.class_methods.size.to_s.center(21)} | #{objc.instance_methods.size.to_s.center(21)}"
+        puts "| #{blue(name)} | #{properties.size.to_s.center(21)} | #{class_methods.size.to_s.center(21)} | #{instance_methods.size.to_s.center(21)}"
        
         # PROPERTIES
         puts '+' << ('-' * (cols - 2)) << '+'
-        puts objc.properties.collect { |p| "| #{p.to_s.ljust(cols - 4)} |"}
+        puts properties.collect { |p| "| #{p.to_s.ljust(cols - 4)} |"}
         
         # CLASS METHODS
         puts '+' << ('-' * (cols - 2)) << '+'
-        puts objc.class_methods.collect { |cm| "| #{cm.name.ljust(cols - 4)} |"}
+        puts class_methods.collect { |cm| "| #{cm.name.ljust(cols - 4)} |"}
        
         # INSTANCE METHODS
         puts '+' << ('-' * (cols - 2)) << '+'
-        puts objc.instance_methods.collect { |im| "| #{im.name.ljust(cols - 4)} |"}
+        puts instance_methods.collect { |im| "| #{im.name.ljust(cols - 4)} |"}
         
         # FOOTER
         puts '+' << ('-' * (cols - 2)) << '+'

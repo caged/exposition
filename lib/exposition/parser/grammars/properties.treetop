@@ -1,9 +1,10 @@
 grammar Properties
   include SourceFile
   include Language
+  include Comments
   
   rule property
-    line_break space* "@property" space* attrs:attributes* property_type protocol* space* prop_name:type_name ';' <Property>
+    docs:block_comment? line_break space* "@property" space* attrs:attributes* property_type protocols* space* prop_name:type_name ';' <Property>
   end
   
   rule attributes
