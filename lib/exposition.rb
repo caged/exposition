@@ -47,6 +47,8 @@ module Exposition
     end
     
     def show_stats
+      total_classes           = sum(@parsed_docs.collect { |doc| doc.info.objc_classes.size })
+      total_categories        = sum(@parsed_docs.collect { |doc| doc.info.objc_categories.size })
       total_class_methods     = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.class_methods.size })})
       total_instance_methods  = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.instance_methods.size })})
       total_properties        = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.properties.size })})
@@ -65,9 +67,10 @@ module Exposition
         objc = pd.info
         
         klasses           = objc.objc_classes
+        categories        = objc.objc_categories
         properties        = klasses.collect { |c| c.properties }.flatten
-        instance_methods  = klasses.collect { |c| c.instance_methods }.flatten
-        class_methods     = klasses.collect { |c| c.class_methods }.flatten
+        instance_methods  = klasses.collect { |c| c.instance_methods }.flatten + categories.collect { |c| c.instance_methods }.flatten
+        class_methods     = klasses.collect { |c| c.class_methods }.flatten + categories.collect { |c| c.class_methods }.flatten
         
         # HEADER
         puts '+' << ('-' * (cols - 2)) << '+'
@@ -76,7 +79,7 @@ module Exposition
         # STATS 
         puts '+' << ('-' * (cols - 2)) << '+'
         name = pd.name.ljust(max_name_length, ' ')
-        puts "| #{blue(name)} | #{properties.size.to_s.center(21)} | #{class_methods.size.to_s.center(21)} | #{instance_methods.size.to_s.center(21)}"
+        puts "| #{blue(name)} | #{klasses.size.to_s.center(30)} | #{properties.size.to_s.center(21)} | #{class_methods.size.to_s.center(21)} | #{instance_methods.size.to_s.center(21)}"
        
         # PROPERTIES
         puts '+' << ('-' * (cols - 2)) << '+'
@@ -96,6 +99,8 @@ module Exposition
       end
       
       puts yellow("=" * cols)
+      puts "#{blue(total_classes.to_s)} TOTAL CLASSES"
+      puts "#{blue(total_categories.to_s)} TOTAL CATEGORIES"
       puts "#{blue(total_class_methods.to_s)} TOTAL CLASS METHODS"
       puts "#{blue(total_instance_methods.to_s)} TOTAL INSTANCE METHODS"
       puts "#{blue(total_properties.to_s)} TOTAL PROPERTIES"

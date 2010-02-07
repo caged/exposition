@@ -4,7 +4,7 @@ grammar Properties
   include Comments
   
   rule property
-    docs:block_comment? line_break space* "@property" space* attrs:attributes* property_type protocols* space* prop_name:type_name ';' <Property>
+    docs:block_comment? line_break space* prop:("@property" space* attrs:attributes* property_type protocols* space* prop_name:type_name ';') <Property>
   end
   
   rule attributes

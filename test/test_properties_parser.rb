@@ -95,7 +95,12 @@ context "Parsing Properties Declared in Header Files" do
     assert_equal(['retain'], prop1.attributes) 
     assert_equal(['nonatomic', 'retain'], prop2.attributes)   
     assert_equal(['nonatomic', 'retain'], prop3.attributes)   
-      
-    
+  end
+  
+  test 'parses documented properties' do
+    prop1 = parse("\n/**\n * The source of a sequential photo collection that will be displayed.\n */\n@property(nonatomic,retain) id<TTPhotoSource> photoSource;")
+    assert_equal('photoSource', prop1.name)
+    assert_instance_of(Comments::BlockComment, prop1.documentation)
+    assert_equal(prop1.documentation.to_s, "/**\n * The source of a sequential photo collection that will be displayed.\n */")
   end
 end

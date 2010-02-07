@@ -1,21 +1,9 @@
 module ObjCClasses
-  class ObjCClass < Treetop::Runtime::SyntaxNode
+  class ObjCObject < Treetop::Runtime::SyntaxNode
     include Enumerable
     include Properties
     include Methods
     include Comments
-    
-    def name
-      class_decleration.class_name.text_value.strip
-    end
-    
-    def superclass
-      class_decleration.inheritance_and_protocol.superclass.text_value.strip
-    end
-    
-    def conforms_to
-      class_decleration.inheritance_and_protocol.pcalls
-    end
     
     def each
       elements.each { |e| yield e }
@@ -37,14 +25,32 @@ module ObjCClasses
       members.elements.select { |e| e.is_a?(ClassMethod) }
     end
     
+    def documentation
+      docs
+    end
+  end
+  
+  class ObjCClass < ObjCObject
+    def name
+      class_decleration.class_name.text_value.strip
+    end
+    
+    def superclass
+      class_decleration.inheritance_and_protocol.superclass.text_value.strip
+    end
+    
+    def conforms_to
+      class_decleration.inheritance_and_protocol.pcalls
+    end
+    
     def instance_variables
       ivar_elements = class_decleration.instance_variable_area.instance_variables.elements
       ivar_elements.select { |e| e.is_a?(InstanceVariable) }
     end
+  end
+  
+  class ObjCCategory < ObjCObject
     
-    def documentation
-      docs.to_s
-    end
   end
   
   class InstanceVariable < Treetop::Runtime::SyntaxNode

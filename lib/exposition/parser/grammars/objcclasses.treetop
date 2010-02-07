@@ -4,9 +4,21 @@ grammar ObjCClasses
   include Methods
   include Properties
   include Comments
+  
+  rule objc_object
+    objc_class / objc_category
+  end
 
   rule objc_class
     docs:block_comment? class_start class_decleration members:(property / instance_method / class_method / empty_line)+ class_end <ObjCClass>
+  end
+  
+  rule objc_category
+    docs:block_comment? class_start category_decleration members:(instance_method / class_method / empty_line)+ class_end <ObjCCategory>
+  end
+  
+  rule category_decleration
+    class_name:type_name space* '(' space* type_name space* ')' space*
   end
   
   rule class_decleration

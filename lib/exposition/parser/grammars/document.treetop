@@ -4,6 +4,6 @@ grammar Document
   include Comments
   
   rule contents
-    (inline_comment / objc_class / empty_line / line_break / space / char)* <Doc>
+    (inline_comment / objc_object / empty_line / line_break / space / char)* <Doc>
   end
 end

@@ -29,7 +29,7 @@ module Methods
     end
     
     def documentation
-      docs.to_s
+      docs
     end
     
     def to_s

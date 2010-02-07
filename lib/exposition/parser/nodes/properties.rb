@@ -2,19 +2,19 @@ module Properties
   class Base < Treetop::Runtime::SyntaxNode; end
   class Property < Base
     def attributes
-      attrs.text_value.gsub(/(\(|\)|\s*)/, '').split(',')
+      prop.attrs.text_value.gsub(/(\(|\)|\s*)/, '').split(',')
     end
     
     def name
-      prop_name.text_value.strip
+      prop.prop_name.text_value.strip
     end
     
     def type
-      property_type.type_name.text_value.strip
+      prop.property_type.type_name.text_value.strip
     end
     
     def documentation
-      docs.to_s
+      docs
     end
     
     def getter
@@ -30,7 +30,7 @@ module Properties
     end
     
     def ib_outlet?
-      property_type.text_value.include?('IBOutlet')
+      prop.property_type.text_value.include?('IBOutlet')
     end
     
     def readonly?
@@ -38,7 +38,7 @@ module Properties
     end
     
     def to_s
-      text_value.strip
+      prop.text_value
     end
   end
 end

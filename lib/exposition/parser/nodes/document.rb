@@ -10,5 +10,9 @@ module Document
     def objc_classes
       select { |e| e.is_a?(ObjCClass) }
     end
+    
+    def objc_categories
+      select { |e| e.is_a?(ObjCCategory) }
+    end
   end
 end
