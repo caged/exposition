@@ -1,0 +1,3 @@
+* Function pointers, defines, etc.
+* Inline properties: @property NSUInteger one, two, three;
+* Documentation Generator

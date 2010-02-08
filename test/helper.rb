@@ -21,17 +21,21 @@ class Test::Unit::TestCase
     result
   end
   
+  def prepare_content_for_parse(content)
+    string = content.gsub(/\r\n/, "\n")
+    string = string.split("\n").map do |line|
+      line.gsub(/\s+$/, '')
+    end.join("\n")
+    "\n#{string}\n"
+  end
+  
   def blank_line
     "\n * \n "
   end
   
   def parse_file(filename)
-    path = File.expand_path(File.join(File.dirname(__FILE__), "..", "fixtures", filename))
-    file = File.open(path){ |f| f.read }
-    file.gsub!(/\r\n/, "\n")
-    file = file.split("\n").map do |line|
-      line.gsub(/\s+$/, '')
-    end.join("\n")
+    path = File.expand_path(File.join(File.dirname(__FILE__), "samples", "#{filename}.h"))
+    file = prepare_content_for_parse(File.read(path))
     parse(file)
   end
   
