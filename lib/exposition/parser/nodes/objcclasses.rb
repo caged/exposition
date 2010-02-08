@@ -53,6 +53,10 @@ module ObjCClasses
     
   end
   
+  class ObjCProtocol < ObjCObject
+  
+  end
+  
   class InstanceVariable < Treetop::Runtime::SyntaxNode
     include Language
     

@@ -6,15 +6,19 @@ grammar ObjCClasses
   include Comments
   
   rule objc_object
-    objc_class / objc_category
+    objc_class / objc_category / objc_protocol
   end
 
   rule objc_class
-    docs:block_comment? class_start class_decleration members:(property / instance_method / class_method / empty_line)+ class_end <ObjCClass>
+    docs:block_comment? class_start class_decleration members:(visibility / property / instance_method / class_method / empty_line)+ class_end <ObjCClass>
   end
   
   rule objc_category
-    docs:block_comment? class_start category_decleration members:(instance_method / class_method / empty_line)+ class_end <ObjCCategory>
+    docs:block_comment? class_start category_decleration members:(visibility / instance_method / class_method / empty_line)+ class_end <ObjCCategory>
+  end
+  
+  rule objc_protocol
+    docs:block_comment? line_break+ '@protocol' space+ protocol_name:type_name pcalls:protocols? members:(visibility / instance_method / class_method / empty_line)+ class_end <ObjCProtocol>
   end
   
   rule category_decleration
@@ -43,5 +47,9 @@ grammar ObjCClasses
     
   rule class_end
     line_break* '@end' space* line_break+
+  end
+  
+  rule visibility
+    '@optional'
   end
 end

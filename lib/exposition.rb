@@ -21,7 +21,13 @@ module Exposition
     end
     
     def self.generate!(*source_files)
-      new(*source_files).parse
+      if block_given?
+        parser = new(*source_files)
+        yield @options
+        parser.parse
+      else
+        new(*source_files).parse
+      end
     end
     
     def parse
@@ -49,6 +55,7 @@ module Exposition
     def show_stats
       total_classes           = sum(@parsed_docs.collect { |doc| doc.info.objc_classes.size })
       total_categories        = sum(@parsed_docs.collect { |doc| doc.info.objc_categories.size })
+      total_protocols         = sum(@parsed_docs.collect { |doc| doc.info.objc_protocols.size })
       total_class_methods     = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.class_methods.size })})
       total_instance_methods  = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.instance_methods.size })})
       total_properties        = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.properties.size })})
@@ -68,9 +75,14 @@ module Exposition
         
         klasses           = objc.objc_classes
         categories        = objc.objc_categories
+        protocols         = objc.objc_protocols
         properties        = klasses.collect { |c| c.properties }.flatten
-        instance_methods  = klasses.collect { |c| c.instance_methods }.flatten + categories.collect { |c| c.instance_methods }.flatten
-        class_methods     = klasses.collect { |c| c.class_methods }.flatten + categories.collect { |c| c.class_methods }.flatten
+        instance_methods  = klasses.collect { |c| c.instance_methods }.flatten + 
+                            categories.collect { |c| c.instance_methods }.flatten +
+                            protocols.collect { |p| p.instance_methods }.flatten
+        class_methods     = klasses.collect { |c| c.class_methods }.flatten + 
+                            categories.collect { |c| c.class_methods }.flatten + 
+                            protocols.collect { |p| p.class_methods }.flatten
         
         # HEADER
         puts '+' << ('-' * (cols - 2)) << '+'
