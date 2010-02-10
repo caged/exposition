@@ -47,14 +47,22 @@ module ObjCClasses
       ivar_elements = class_decleration.instance_variable_area.instance_variables.elements
       ivar_elements.select { |e| e.is_a?(InstanceVariable) }
     end
+    
+    def symbol
+      'cl'
+    end
   end
   
   class ObjCCategory < ObjCObject
-    
+    def symbol
+      'cat'
+    end
   end
   
   class ObjCProtocol < ObjCObject
-  
+    def symbol
+      'intf'
+    end
   end
   
   class InstanceVariable < Treetop::Runtime::SyntaxNode

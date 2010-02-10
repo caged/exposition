@@ -1,6 +1,12 @@
 module Methods      
   class Method < Treetop::Runtime::SyntaxNode
+    
     def name
+      mtype = is_a?(ClassMethod) ? '+' : '-'
+      "#{mtype} #{body_of_method}"
+    end
+    
+    def body_of_method
       if arguments.variable?
         mbody = "#{arguments.first.arg_body.text_value.strip}"
       else
@@ -14,9 +20,6 @@ module Methods
       else
         mbody << ':'
       end
-      
-      mtype = is_a?(ClassMethod) ? '+' : '-'
-      "#{mtype} #{method_body.return_type.text_value.strip}#{mbody}"
     end
     
     def arguments
@@ -32,17 +35,29 @@ module Methods
       docs
     end
     
+    def owner
+      parent.parent
+    end
+    
     def to_s
       text_value.strip.gsub(/\s+/, ' ')
+    end
+    
+    def ref
+      "#//apple_ref/occ/#{self.class.symbol}/#{owner.name}/#{body_of_method}"
     end
   end
   
   class ClassMethod < Method
-    
+    def self.symbol
+      'clm'
+    end
   end
   
   class InstanceMethod < Method
-    
+    def self.symbol
+      'instm'
+    end
   end
   
   class Arguments < Treetop::Runtime::SyntaxNode

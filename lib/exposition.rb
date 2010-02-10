@@ -9,25 +9,34 @@ dir = File.expand_path(File.dirname(__FILE__))
 $LOAD_PATH << dir
 
 require 'exposition/parser'
+require 'exposition/generator'
 
 module Exposition
   class Documentation
+    attr_reader :config
+    
     def initialize(*source_files)
-      options_hash = source_files.last.is_a?(Hash) ? source_files.pop : {}
-      @options = {:stats => true}.merge(options_hash)
+      @config = Configuration.new
       @source_files = source_files
       @parsed_docs = []
       @parser = Parser.new
+      @generator = Generator.new
     end
     
     def self.generate!(*source_files)
       if block_given?
         parser = new(*source_files)
-        yield @options
-        parser.parse
+        yield parser.config
+        parser.run
       else
-        new(*source_files).parse
+        new(*source_files).run
       end
+    end
+    
+    def run
+      parse
+      @generator.generate_from_source_files(@parsed_docs)
+      show_stats if !@config.show_stats
     end
     
     def parse
@@ -49,7 +58,6 @@ module Exposition
         @parsed_docs << sf
       end
       puts "\n\n\n"
-      show_stats if @options[:stats]
     end
     
     def show_stats
@@ -84,10 +92,13 @@ module Exposition
                             categories.collect { |c| c.class_methods }.flatten + 
                             protocols.collect { |p| p.class_methods }.flatten
         
+        # TODO REFACTOR THIS
+        
         # HEADER
         puts '+' << ('-' * (cols - 2)) << '+'
         header = "#{headers[:name]} | #{headers[:classes]} | #{headers[:properties]} | #{headers[:class_methods]} | #{headers[:instance_methods]}"
         puts header
+        
         # STATS 
         puts '+' << ('-' * (cols - 2)) << '+'
         name = pd.name.ljust(max_name_length, ' ')
@@ -127,6 +138,31 @@ module Exposition
   class SourceFile < Struct.new(:name, :location, :source, :info)
     def name
       File.basename(location)
+    end
+  end
+  
+  class Configuration
+    # Show stats tables
+    attr_accessor :show_stats
+    
+    # Glob of files to include
+    attr_accessor :includes
+    
+    # Glob of files exclude
+    attr_accessor :excludes
+    
+    # Whether or not to add members (methods, properties, instance variables, etc) 
+    # to the documentation output
+    attr_accessor :publish_underscored_members 
+    
+    attr_accessor :templates
+    
+    def initialize
+      self.show_stats = false
+      self.includes   = []
+      self.excludes   = []
+      self.publish_underscored_members = false
+      self.templates = [:docset]
     end
   end
 end
