@@ -12,6 +12,12 @@ module Comments
   end
   
   class BlockComment < Comment
-    
+    def to_s
+      str = ''
+      str = lines.elements.collect do |line|
+        line.text_value.gsub(/\s*[\*^]/, '')
+      end.join("\n") unless lines.nil?
+      str
+    end
   end
 end

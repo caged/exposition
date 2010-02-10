@@ -1,5 +1,5 @@
 module Methods      
-  class Method < Treetop::Runtime::SyntaxNode
+  class Method < Language::Documentable
     
     def name
       mtype = is_a?(ClassMethod) ? '+' : '-'
@@ -29,10 +29,6 @@ module Methods
     
     def return_type
       method_body.return_type
-    end
-    
-    def documentation
-      docs
     end
     
     def owner

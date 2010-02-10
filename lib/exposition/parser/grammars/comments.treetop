@@ -10,7 +10,7 @@ grammar Comments
   end
   
   rule block_comment
-    comment_start (block_comment_text_line / block_comment_blank_line)+ comment_end <BlockComment>
+    comment_start lines:(block_comment_text_line / block_comment_blank_line)+ comment_end <BlockComment>
   end
   
   rule comment_start

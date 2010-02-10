@@ -1,9 +1,13 @@
-module ObjCClasses
-  class ObjCObject < Treetop::Runtime::SyntaxNode
+module ObjCClasses  
+  class ObjCObject < Language::Documentable
     include Enumerable
     include Properties
     include Methods
     include Comments
+    
+    def self.symbol
+      'cl'
+    end
     
     def each
       elements.each { |e| yield e }
@@ -23,10 +27,6 @@ module ObjCClasses
     
     def class_methods
       members.elements.select { |e| e.is_a?(ClassMethod) }
-    end
-    
-    def documentation
-      docs
     end
   end
   
@@ -54,13 +54,21 @@ module ObjCClasses
   end
   
   class ObjCCategory < ObjCObject
-    def symbol
+    def name
+      category_decleration.class_name.text_value
+    end
+    
+    def self.symbol
       'cat'
     end
   end
   
   class ObjCProtocol < ObjCObject
-    def symbol
+    def name
+      protocol_name.text_value.strip
+    end
+    
+    def self.symbol
       'intf'
     end
   end

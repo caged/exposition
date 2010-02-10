@@ -20,20 +20,34 @@ module Exposition
       files.each do |source|
         source.info.objc_classes.each do |klass|
           sym_name = klass.name.downcase.to_sym
-          if symbols[:classses][sym_name].nil? 
+          if symbols[:classes][sym_name].nil? 
             symbols[:classes][sym_name] = klass
           end
         end
         
-        source.info.objc_classes.each do |klass|
+        source.info.objc_protocols.each do |klass|
           sym_name = klass.name.downcase.to_sym
-          if symbols[:classses][sym_name].nil? 
-            symbols[:classes][sym_name] = klass
+          if symbols[:protocols][sym_name].nil? 
+            symbols[:protocols][sym_name] = klass
+          end
+        end
+        
+        source.info.objc_categories.each do |klass|
+          sym_name = klass.name.downcase.to_sym
+          if symbols[:categories][sym_name].nil? 
+            symbols[:categories][sym_name] = klass
           end
         end
       end
-      pp symbols.keys
       
+      symbols.each do |group, objects|
+        objects.each do |key, val|
+          puts val.name
+          val.methods.each do |m|
+            puts m.ref
+          end
+        end
+      end
     end
   end
 end

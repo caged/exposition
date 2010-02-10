@@ -16,6 +16,7 @@ context "Parsing Classes and Categories in Header Files" do
     assert_not_nil(c1.class_methods)
     assert_not_nil(c1.instance_methods)
     
-    assert_instance_of(Comments::BlockComment, c1.documentation)
+    doc_str = " This is some documentation for SampleClass."
+    assert_equal(c1.documentation[0, doc_str.length], doc_str)
   end
 end
