@@ -1,0 +1,5 @@
+<li class="member">
+  <h5 class="member-name"><%= member.name %> <a name="<%= member.ref %>"></a></h5>
+  <%= markdown(member.documentation) %>
+  <p><code><%= member.to_s %></code></p>
+</li>

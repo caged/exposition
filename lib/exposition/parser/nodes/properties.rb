@@ -1,6 +1,9 @@
 module Properties
-  class Base < Treetop::Runtime::SyntaxNode; end
-  class Property < Base
+  class Property < Language::Documentable
+    def self.symbol
+      "intfp"
+    end
+    
     def attributes
       prop.attrs.text_value.gsub(/(\(|\)|\s*)/, '').split(',')
     end
@@ -11,10 +14,6 @@ module Properties
     
     def type
       prop.property_type.type_name.text_value.strip
-    end
-    
-    def documentation
-      docs
     end
     
     def getter

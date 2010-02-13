@@ -28,7 +28,7 @@ module Methods
     end
     
     def return_type
-      method_body.return_type
+      method_body.return_type.text_value
     end
     
     def owner
@@ -36,11 +36,11 @@ module Methods
     end
     
     def to_s
-      text_value.strip.gsub(/\s+/, ' ')
+      "#{is_a?(ClassMethod) ? '+' : '-'} #{method_body.text_value}"
     end
     
     def ref
-      "#//apple_ref/occ/#{self.class.symbol}/#{owner.name}/#{body_of_method}"
+      "//apple_ref/occ/#{self.class.symbol}/#{owner.name}/#{body_of_method}"
     end
   end
   

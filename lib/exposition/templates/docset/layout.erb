@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title><%= @page_title %></title>
+	<% @relative_assets.each do |asset| %>
+	  <% asset = Pathname.new(asset) %>
+	  <% asset_type = asset.parent.basename.to_s %>
+	  <% if asset_type == 'stylesheets' -%>
+	  <link rel="stylesheet" href="<%= asset %>" type="text/css" media="screen" title="no title" charset="utf-8">
+	  <% elsif asset_type == 'javascripts' -%>
+	  <script src="<%= asset %>" type="text/javascript" charset="utf-8"></script>
+	  <% end -%>
+	<% end %>
+</head>
+<body>
+  <!-- container -->
+  <div id="container">
+    <!-- header -->
+    <div id="header">
+      <div id="top-bar">
+        <h1><%= config.project_name %></h1>
+      </div>
+      <div id="obj-bar">
+        <div id="toc-label">Table of Contents</div>
+        <div id="main-label"><%= @page_title %></div>
+        <div id="hdr-controls">
+          <input type="search" results="10" />
+        </div>
+      </div>
+    </div>
+    <!-- /header -->
+
+    <!-- content -->
+      <%= partial('../common/toc') %>      
+      <%= yield %>
+    <!-- /content -->
+    
+  </div>
+  <!-- /container -->
+  <div id="footer">
+    <ul id="trail">
+      <li><a href="#" title="">iPhone Dev Center</a></li>
+      <li><a href="#" title="">iPhone OS Reference Library</a></li>
+      <li><a href="#" title="">User Experience: Windows & Views</a></li>
+      <li><a href="#" title="">UIView Class Reference</a></li>
+    </ul>
+    <a href="#plug" id="plug">Exposition Delivered</a>
+  </div>
+</body>
+</html>

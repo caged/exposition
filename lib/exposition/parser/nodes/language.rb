@@ -15,7 +15,7 @@ module Language
     end
     
     def ref
-      "#//apple_ref/occ/#{self.class.symbol}/#{name}"
+      "//apple_ref/occ/#{self.class.symbol}/#{name}"
     end
   end
   

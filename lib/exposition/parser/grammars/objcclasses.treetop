@@ -38,7 +38,7 @@ grammar ObjCClasses
   end
   
   rule instance_variable
-    line_break space* type_name pcalls:protocols? space* '*'? space* ivar_name:type_name ';' <InstanceVariable>
+    line_break space* type_name pcalls:protocols? space* '*'? space* ivar_name:type_name ';' &(line_break) <InstanceVariable>
   end
   
   rule class_start

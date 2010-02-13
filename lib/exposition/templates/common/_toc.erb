@@ -1,0 +1,48 @@
+      <!-- toc -->
+      <div id="toc">
+        <ul>
+          <% unless @object.documentation.empty? %>
+          <li><a href="#" title="Foo">Overview</a></li>
+          <% end %>
+          <li>
+            <a href="#" title="Foo">Tasks</a>
+            <ul>
+              <li><a href="#" title="">Sending Get Requests</a></li>
+              <li><a href="#" title="">Setting Configuration Options</a></li>
+            </ul>
+          </li>
+          <% if @object.properties.any? %>
+          <li>
+            <a href="#<%= anchor_for_collection(@object.properties) %>" title="Foo">Properties</a>
+            <ul>
+              <% @object.properties.each do |property| %>
+              <li><a href="#<%= property.ref %>" title=""><%= property.name %></a></li>
+              <% end %>
+            </ul>
+          </li>
+          <% end %>
+          
+          <% if @object.instance_methods.any? %>
+          <li>
+            <a href="#<%= anchor_for_collection(@object.instance_methods) %>" title="Foo">Instance Methods</a>
+            <ul>
+              <% @object.instance_methods.each do |method| %>
+              <li><a href="#<%= method.ref %>" title=""><%= method.name %></a></li>
+              <% end %>
+            </ul>
+          </li>
+          <% end %>
+    
+          <% if @object.class_methods.any? %>
+          <li>
+            <a href="#<%= anchor_for_collection(@object.class_methods) %>" title="Foo">Class Methods</a>
+            <ul>
+              <% @object.class_methods.each do |method| %>
+              <li><a href="#<%= method.ref %>" title=""><%= method.name %></a></li>
+              <% end %>
+            </ul>
+          </li>
+          <% end %>
+        </ul>
+      </div>
+      <!-- /toc -->

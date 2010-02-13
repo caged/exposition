@@ -1,0 +1,405 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+body {
+  margin: 0;
+  text-align: center;
+  padding: 0;
+  font: normal 12px/1.5em "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #fff;
+  color: #333;
+}
+
+
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+  outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+  text-decoration: none;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  color: #4c76c6;
+}
+
+/*------------------------------------------------------------------------------------
+  @group structure
+------------------------------------------------------------------------------------*/
+#container {
+  text-align: left;
+}
+
+#toc {
+  position: absolute;
+  background: #e2ebf8;
+  top: 75px;
+  bottom: 24px;
+  width: 229px;
+  border-right: 1px solid #b1c1da;
+  overflow-x: hidden;
+}
+
+#main {
+  position: absolute;
+  top: 75px;
+  bottom: 24px;
+  left: 229px;
+  right: 0;
+  padding: 21px;
+  overflow: auto;
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 3px 0;
+  border-top: 1px solid #fff;
+  background: #eee -webkit-gradient(linear, left top, left bottom, from(rgba(238,238,238,1)), to(rgba(204,204,204,1)));
+  background: #eee -moz-linear-gradient(top, rgba(238,238,238,1), rgba(204,204,204,1));
+  height: 18px;
+  text-shadow: 1px 1px rgba(255, 255, 255, 0.5);
+  width: 100%;
+  text-align: left;
+  -webkit-box-shadow: 0 -1px rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 -1px rgba(0,0,0,0.3);
+}
+
+/* @end */
+
+/*------------------------------------------------------------------------------------
+  @group typography
+------------------------------------------------------------------------------------*/
+
+code, pre code {
+  font-family: Menlo, Monaco, Courier, Consolas, monospace;
+  font-size: 90%;
+}
+
+/* @end */
+
+/*------------------------------------------------------------------------------------
+  @group header
+------------------------------------------------------------------------------------*/
+
+#header {
+
+}
+
+#top-bar {
+  padding: 12px;
+  border-top: 1px solid #ccd1d7;
+  border-bottom: 1px solid #111;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+  font-weight: normal;
+  background: #eee -webkit-gradient(linear, left top, left bottom, from(rgba(157, 167, 178, 1)), to(rgba(77, 95, 105, 1)));
+  background: #eee -moz-linear-gradient(top, rgba(157, 167, 178, 1), rgba(77, 95, 105, 1));
+}
+
+#obj-bar {
+  padding: 6px 12px;
+  border-bottom: 1px solid #aaa;
+  background: #eee -webkit-gradient(linear, left top, left bottom, from(rgba(238,238,238,1)), to(rgba(204,204,204,1)));
+  background: #eee -moz-linear-gradient(top, rgba(238,238,238,1), rgba(204,204,204,1));
+  height: 18px;
+  text-shadow: 1px 1px rgba(255, 255, 255, 0.5);
+  font-weight: bold;
+}
+
+#header h1 {
+  font-size: 130%;
+}
+
+#toc-label {
+  display: inline-block;
+  width: 217px;
+  margin-top: 2px;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+#main-label {
+  margin-top: 2px;
+  display: inline-block;
+  margin-left: 12px;
+}
+
+#hdr-controls {
+  display: inline-block;
+  float: right;
+  margin-top: -2px;
+}
+
+#hdr-controls input[type=search] {
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+  border: 1px solid rgba(135, 135, 135, 0.5);
+  padding: 1px 6px;
+  -moz-box-shadow: 0 -1px rgba(0,0,0,0.5);
+  border-bottom: none;
+  margin-top: 3px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+ #hdr-controls input[type=search] {
+  margin-top: 2px; 
+ }
+}
+
+
+/*#hdr-controls select {
+  margin-top: -3px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  border: none;
+  background: rgba(0,0,0,0.1);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  padding: 3px 6px;
+  border: 1px solid rgba(135,135,135,0.2);
+  color: #333;
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#hdr-controls select option {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+option.group {
+  font-weight: bold;
+}*/
+/* @end */
+
+/*------------------------------------------------------------------------------------
+  @group toc
+------------------------------------------------------------------------------------*/
+
+#toc ul {
+  list-style: none;
+  font-size: 95%;
+}
+
+#toc > ul {
+  margin-top: 12px;
+}
+
+#toc ul li {
+  white-space: nowrap;
+  margin-left: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+#toc ul li a {
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+  color: #505d6d;
+}
+
+#toc ul li a:hover {
+  text-decoration: underline;
+}
+
+#toc ul li.ex {
+  margin: 1px 0 1px 12px;
+}
+
+#toc ul li.ex li {
+  margin-left: 15px;
+}
+
+#toc ul li.ex:before {
+  content: "\25B6";
+  font-size: 80%;
+  color: #8191a0;
+  margin-right: 6px;
+  display: block;
+  float: left;
+}
+
+#toc ul li.ex.exp:before {
+	content: "\25BC";
+	display: inline-block;
+}
+
+#toc ul li ul li a {
+  color: #333;
+}
+
+#toc ul.hidden {
+  display: none;
+}
+
+/* @end */
+
+/*------------------------------------------------------------------------------------
+  @group main
+------------------------------------------------------------------------------------*/
+#main {
+  line-height: 160%;
+}
+
+#main h3 {
+  font-size: 200%;
+  margin-bottom: 9px;
+}
+
+#main h4 {
+  font-size: 160%;
+  margin-bottom: 12px;
+  margin-top: 18px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 6px;
+}
+
+#main h5 {
+  font-size: 120%;
+  margin: 9px 0 3px 0;
+}
+
+#main table.info {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 18px 0;
+}
+
+#main table.info tr td, #main table.info tr th {
+  padding: 6px 12px;
+  border-bottom: 1px solid #dee4ed;
+  min-width: 200px;
+}
+
+#main table.info tr:nth-child(even) td,
+#main table.info tr:nth-child(even) th {
+  background: #f7f9fd;
+}
+
+#main table.info tr:last-child td, #main table.info tr:last-child th {
+  border-bottom: none;
+}
+
+#main p {
+  margin-bottom: 12px;
+}
+
+#main ul.members {
+  margin-left: 30px;
+  font-family: Menlo, Monaco, Courier, Consolas, monospace;
+}
+
+#main ul.members span.prop {
+  color: #999;
+  background-color: #dee4df;
+  padding: 0 3px;
+  font-style: italic;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+#main div.note {
+  padding: 6px;
+  background: #fffff2;
+  border: 1px solid #ebdc69;
+  color: #000;
+  -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 0 2px rgba(0,0,0,0.2);
+  box-shadow: 0 0 2px rgba(0,0,0,0.2);
+  
+}
+
+#main .member-list li.member {
+  margin-bottom: 30px;
+}
+
+#main .member-name:after {
+  content: "\25B6";
+  margin-left: 3px;
+  font-size: 60%;
+  color: #ccc;
+}
+
+/* @end */
+
+/*------------------------------------------------------------------------------------
+  @group footer
+------------------------------------------------------------------------------------*/
+#trail {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+#trail li {
+  margin: 0;
+  display: inline-block;
+}
+
+#trail li a {
+  color: #444;
+  text-decoration: none;
+}
+
+#trail li:after {
+  content: "\25B6";
+  color: #bbb;
+  font-size: 80%;
+  margin-left: 3px;
+  text-shadow: none;
+  vertical-align: middle;
+}
+
+#trail li:last-child:after {
+  content: "";
+}
+
+#plug {
+  position: absolute;
+  bottom: 3px;
+  right: 6px;
+  color: #555;
+  font-size: 90%;
+  text-decoration: none;
+}
+
+/* @end */

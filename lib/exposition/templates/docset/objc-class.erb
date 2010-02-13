@@ -1,0 +1,46 @@
+      <!-- main -->
+      <div id="main">        
+        <h3><%= @page_title %></h3>
+        <%= partial('../common/info') %>
+        
+        <% if @object.documentation -%>
+        <h4>Overview</h4>
+        <%= markdown(@object.documentation) -%>
+        <% end -%>
+        
+        <h4>Tasks</h4>
+        <h5>Creating Instances</h5>
+        <ul class="members">
+          <li><a href="#" title="">– initWithFrame:</a></li>
+        </ul>
+  
+        <h5>Modifying the Bounds and Frame Rectangles</h5>
+        <ul class="members">
+          <li><a href="#" title="">frame</a> <span class="prop">property</span></li>
+          <li><a href="#" title="">bounds</a> <span class="prop">property</span></li>
+          <li><a href="#" title="">center</a> <span class="prop">property</span></li>
+          <li><a href="#" title="">transform</a> <span class="prop">property</span></li>
+        </ul>
+  
+        <% if @object.properties.any? %>
+        <h4>Properties <a name="<%= anchor_for_collection(@object.properties) %>"></a></h4>
+        <ul class="member-list">
+          <%= partial('../common/member', :collection => @object.properties) %>
+        </ul>
+        <% end %>
+  
+        <% if @object.class_methods.any? %>
+        <h4>Class Methods <a name="<%= anchor_for_collection(@object.class_methods) %>"></a></h4>
+        <ul class="member-list">
+          <%= partial('../common/member', :collection => @object.class_methods) %>
+        </ul>
+        <% end %>
+        
+        <% if @object.instance_methods.any? %>
+        <h4>Instance Methods <a name="<%= anchor_for_collection(@object.instance_methods) %>"></a></h4>
+        <ul class="member-list">
+          <%= partial('../common/member', :collection => @object.instance_methods) %>
+        </ul>
+        <% end %>
+      </div>
+      <!-- /main -->
