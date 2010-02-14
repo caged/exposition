@@ -11,7 +11,7 @@ module Language
     end
         
     def documentation
-      docs.to_s
+      !docs.is_a?(Comments::BlockComment) ? Comments::BlockComment.new("", 0..0, []) : docs
     end
     
     def ref

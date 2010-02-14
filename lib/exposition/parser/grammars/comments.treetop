@@ -27,7 +27,19 @@ grammar Comments
   end
   
   rule block_comment_keyword_line
-    keyword_start keyword_lines:(!keyword_start (char+ / block_comment_text_line / block_comment_blank_line))+ <Keyword>
+    param_start keyword_lines:keyword_body <Param> / keyword_start keyword_lines:keyword_body <Keyword>
+  end
+  
+  rule keyword_start
+    block_comment_line_start '@' attribute_name:(!reserved_words [a-zA-Z0-9_-]+) space 
+  end
+  
+  rule param_start
+    block_comment_line_start '@' attribute_name:(!reserved_words [0-9]+) space 
+  end
+  
+  rule keyword_body
+    (!keyword_start (char+ / block_comment_text_line / block_comment_blank_line))+
   end
   
   rule block_comment_text_line
@@ -36,10 +48,6 @@ grammar Comments
   
   rule block_comment_line_start
     line_break space* block_comment_line_seperator space
-  end
-  
-  rule keyword_start
-    block_comment_line_start '@' attribute_name:(!reserved_words [a-zA-Z0-9_-]+) space 
   end
   
   rule block_comment_line_seperator

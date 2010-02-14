@@ -3,8 +3,8 @@ $: << dir
 
 require 'nodes/sourcefile'
 require 'nodes/language'
+require 'nodes/comments'
 require 'nodes/properties'
 require 'nodes/methods'
-require 'nodes/comments'
 require 'nodes/objcclasses'
 require 'nodes/document'

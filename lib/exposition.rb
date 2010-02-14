@@ -14,6 +14,7 @@ include Term::ANSIColor
 dir = File.expand_path(File.dirname(__FILE__))
 $LOAD_PATH << dir
 
+require 'exposition/ext'
 require 'exposition/parser'
 require 'exposition/templates'
 require 'exposition/generator'

@@ -1,5 +1,14 @@
 <li class="member">
   <h5 class="member-name"><%= member.name %> <a name="<%= member.ref %>"></a></h5>
-  <%= markdown(member.documentation) %>
+  <%= markdown(member.documentation.summary) %>
   <p><code><%= member.to_s %></code></p>
+  <% if member.is_a?(Methods::Method) && !member.params.empty? %>
+  <h6>Parameters</h6>
+  <dl class="param-list">
+    <% member.params.each do |param| %>
+    <dt><%= param.argument.name %></dt>
+    <dd><%= markdown(param.body) %></dd>
+    <% end %>
+  </dl>
+  <% end %>
 </li>

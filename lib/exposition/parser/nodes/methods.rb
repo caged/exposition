@@ -1,6 +1,6 @@
 module Methods      
   class Method < Language::Documentable
-    
+    include Comments
     def name
       mtype = is_a?(ClassMethod) ? '+' : '-'
       "#{mtype} #{body_of_method}"
@@ -33,6 +33,14 @@ module Methods
     
     def owner
       parent.parent
+    end
+    
+    def params
+      documentation.params.collect do |param|
+        arg = arguments[param.arg_index]
+        param.argument = arg
+        param
+      end
     end
     
     def to_s

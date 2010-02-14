@@ -348,6 +348,11 @@ option.group {
   box-shadow: 0 0 2px rgba(0,0,0,0.2);
   
 }
+/* @end */
+
+/*------------------------------------------------------------------------------------
+  @group members
+------------------------------------------------------------------------------------*/
 
 #main .member-list li.member {
   margin-bottom: 30px;
@@ -360,7 +365,51 @@ option.group {
   color: #ccc;
 }
 
+.param-list {
+  margin: 0 0 12px 12px;
+}
+
+.param-list dt {
+  font-weight: bold;
+  float: left;
+  display: block;
+  clear: left;
+  font-family: Courier, Menlo, Monaco, Consolas, monospace;
+  margin-right: 6px;
+}
+
+.param-list dt:before {
+  content: "\25CB";
+  margin-right: 3px;
+  color: #999;
+  font-size: 90%;
+  vertical-align: top;
+}
+
+.param-list dd {
+  display: block;
+  float: left;
+}
+
+#main .param-list dd p {
+  margin: 12px 0 0 0;
+}
+
+#main .param-list dd p:first-child {
+  margin-top: 0;
+}
+
+.param-list:after {
+  content: ".";
+  visibility: hidden;
+  height: 0;
+  clear: both;
+  display: block;
+}
+
 /* @end */
+
+
 
 /*------------------------------------------------------------------------------------
   @group footer

@@ -5,9 +5,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title><%= @page_title %></title>
-	<% @relative_assets.each do |asset| %>
-	  <% asset = Pathname.new(asset) %>
-	  <% asset_type = asset.parent.basename.to_s %>
+	<% @relative_assets.each do |asset| -%>
+	  <% asset = Pathname.new(asset) -%>
+	  <% asset_type = asset.parent.basename.to_s -%>
 	  <% if asset_type == 'stylesheets' -%>
 	  <link rel="stylesheet" href="<%= asset %>" type="text/css" media="screen" title="no title" charset="utf-8">
 	  <% elsif asset_type == 'javascripts' -%>
