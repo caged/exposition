@@ -20,4 +20,8 @@ grammar Language
   rule ib_outlet
     'IBOutlet'
   end
+  
+  rule reserved_words
+    ('interface' / 'implementation' / 'synthesize' / 'protocol' / 'class' / 'optional' / 'required' / 'property' / 'dynamic')
+  end
 end

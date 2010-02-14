@@ -1,5 +1,6 @@
 grammar Comments
   include SourceFile
+  include Language
   
   rule test
     (inline_comment / block_comment  / line_break / space / char)*
@@ -10,7 +11,7 @@ grammar Comments
   end
   
   rule block_comment
-    comment_start lines:(block_comment_text_line / block_comment_blank_line)+ comment_end <BlockComment>
+    comment_start lines:(block_comment_keyword_line / block_comment_text_line / block_comment_blank_line)+ comment_end <BlockComment>
   end
   
   rule comment_start
@@ -25,8 +26,20 @@ grammar Comments
     line_break space* block_comment_line_seperator space* &(line_break)
   end
   
+  rule block_comment_keyword_line
+    keyword_start keyword_lines:(!keyword_start (block_comment_text_line / block_comment_blank_line) / char)+ <Keyword>
+  end
+  
   rule block_comment_text_line
-    line_break space* block_comment_line_seperator space text:char+ 
+     block_comment_line_start text:char+ 
+  end
+  
+  rule block_comment_line_start
+    line_break space* block_comment_line_seperator space
+  end
+  
+  rule keyword_start
+    block_comment_line_start '@' attribute_name:(!reserved_words [a-zA-Z0-9_-]+) space 
   end
   
   rule block_comment_line_seperator
