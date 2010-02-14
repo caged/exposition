@@ -33,7 +33,6 @@ module Comments
     def body
       str = ''
       str = keyword_lines.elements.collect do |line|
-        puts line.class
         line.text_value.gsub(/\s*[\*^]/, '')
       end.join("\n") unless keyword_lines.nil?
       str

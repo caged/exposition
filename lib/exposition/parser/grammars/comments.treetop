@@ -27,7 +27,7 @@ grammar Comments
   end
   
   rule block_comment_keyword_line
-    keyword_start keyword_lines:(!keyword_start (block_comment_text_line / block_comment_blank_line)+ / char+) <Keyword>
+    keyword_start keyword_lines:(!keyword_start (char+ / block_comment_text_line / block_comment_blank_line))+ <Keyword>
   end
   
   rule block_comment_text_line
