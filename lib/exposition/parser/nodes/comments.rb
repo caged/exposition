@@ -12,16 +12,22 @@ module Comments
   end
   
   class BlockComment < Comment
+    include Enumerable
+    
+    def each
+      lines.elements.each { |e| yield e }
+    end
+    
     def to_s
       str = ''
-      str = lines.elements.collect do |line|
-        line.text_value.gsub(/\s*[\*^]/, '')
+      str = select { |e| !e.is_a?(Keyword) }.collect do |line|
+        line.text_value.gsub(/^(\s\*\s?)/, '')
       end.join("\n") unless lines.nil?
       str
     end
     
     def keywords
-      lines.elements.select { |e| e.is_a?(Keyword) }
+      select { |e| e.is_a?(Keyword) }
     end
   end
   
@@ -33,7 +39,8 @@ module Comments
     def body
       str = ''
       str = keyword_lines.elements.collect do |line|
-        line.text_value.gsub(/\s*[\*^]/, '')
+        puts "LINE:#{line.text_value}"
+        line.text_value.gsub(/^(\s\*\s?)/, '')
       end.join("\n") unless keyword_lines.nil?
       str
     end

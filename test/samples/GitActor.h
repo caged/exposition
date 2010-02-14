@@ -107,10 +107,10 @@
 + (GITActor *)actor;
 
 /**
- * Creates and returns an actor with the \a name.
+ * Creates and returns an actor with the a name.
  *
- * The email address is derived from the current process environment \c USER
- * and \c HOST variables.
+ * The email address is derived from the current process environment `USER`
+ * and `HOST` variables.
  *
  * @1 Name of the actor
  * @return actor with \a name
@@ -119,7 +119,7 @@
 + (GITActor *)actorWithName: (NSString *)name;
 
 /**
- * Creates and returns an actor with the \a name and \a email.
+ * Creates and returns an actor with the `name` and `email`.
  *
  * @1 Name of the actor
  * @2 Email address of the actor
