@@ -8,20 +8,20 @@
         <%= markdown(@object.documentation.summary) %>
         <% end -%>
         
+        <% tasks = tasks_for_object(@object) %>        
+        
+        <% if tasks.any? %>
         <h4>Tasks</h4>
-        <h5>Creating Instances</h5>
+        <% tasks.each do |key, members| %>
+        <h5><%= key %></h5>
         <ul class="members">
-          <li><a href="#" title="">– initWithFrame:</a></li>
+          <% members.each do |member| %>
+          <li><a href="#<%= member.ref %>" title=""><%= member.name %></a> <% if member.is_a?(Properties::Property) %><span class="prop">property</span><% end %></li>
+          <% end %>
         </ul>
-  
-        <h5>Modifying the Bounds and Frame Rectangles</h5>
-        <ul class="members">
-          <li><a href="#" title="">frame</a> <span class="prop">property</span></li>
-          <li><a href="#" title="">bounds</a> <span class="prop">property</span></li>
-          <li><a href="#" title="">center</a> <span class="prop">property</span></li>
-          <li><a href="#" title="">transform</a> <span class="prop">property</span></li>
-        </ul>
-  
+        <% end %>
+        <% end %>
+        
         <% if @object.properties.any? %>
         <h4>Properties <a name="<%= anchor_for_collection(@object.properties) %>"></a></h4>
         <ul class="member-list">

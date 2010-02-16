@@ -28,7 +28,7 @@ module Comments
     end 
     
     def keywords
-      lines.elements.select { |e| e.is_a?(Keyword)}
+      lines.elements.select { |e| e.is_a?(Keyword) && !e.is_a?(Param)}
     end
     
     def lines

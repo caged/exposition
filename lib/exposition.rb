@@ -28,8 +28,8 @@ module Exposition
     attr_reader :config
     
     def initialize(*source_files)
-      @config = Configuration.new
       @source_files = source_files
+      @config = Configuration.new
       @parser = Parser.new
     end
     
@@ -51,21 +51,29 @@ module Exposition
     
     def run_parse
       puts "Parsing #{@source_files.collect { |sf| File.basename(sf)  }.join(', ')}\n\n\n"
-      @source_files.each_with_index do |file, index|
+      source_files.each_with_index do |file, index|
         progress = '=' * (index + 1) << ">"
-        progress << "]".rjust(@source_files.size - progress.size, "+")
+        progress << "]".rjust(source_files.size - progress.size, "+")
         progress = " [" << progress
-        puts "\c[[FParsing #{index + 1} of #{@source_files.size}:" << red(progress)
+        
+        unless @config.verbose
+          puts "\c[[FParsing #{index + 1} of #{source_files.size}:" << red(progress)
+        else
+          puts red(underscore("#{file.basename} #{index + 1} of #{source_files.size}"))
+        end
         
         content = File.read(file)
         doc = @parser.parse(content)
         raise ParseError, @parser unless doc
-        
+                
         sf = SourceFile.new
         sf.location = file
         sf.info = doc
         sf.source = content
         SymbolMapper.docs << sf
+        
+        
+        stats_for_doc(doc) if @config.verbose          
       end
       puts "\n\n"
     end
@@ -79,6 +87,14 @@ module Exposition
       end
     end
     
+    def stats_for_doc(doc)
+      puts "  - #{doc.objc_classes.size} Classes"
+      puts "  - #{doc.objc_categories.size} Categories"
+      puts "  - #{doc.objc_protocols.size} Protocols"
+      puts "  - #{sum(doc.objc_objects.collect { |obj| obj.methods.size })} Methods"
+      puts "  - #{sum(doc.objc_objects.collect { |obj| obj.properties.size })} Properties"
+    end
+    
     def run_stats
       if @config.show_stats
         total_classes           = sum(SymbolMapper.docs.collect { |doc| doc.info.objc_classes.size })
@@ -88,59 +104,8 @@ module Exposition
         total_instance_methods  = sum(SymbolMapper.docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.instance_methods.size })})
         total_properties        = sum(SymbolMapper.docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.properties.size })})
       
-        max_name_length = SymbolMapper.docs.collect { |pd| pd.name.size }.max
         cols = `tput cols`.to_i
-        headers = {
-          :name => bold(red('NAME'.center(max_name_length + 2))),
-          :classes => bold(red('CLASSES'.center(30))),
-          :properties => bold(red('PROPERTIES').center(30)),
-          :class_methods => bold(red('CLASS METHODS').center(30)),
-          :instance_methods => bold(red('INSTANCE METHODS').center(30))
-        }
-      
-        SymbolMapper.docs.each do |pd|
-          objc = pd.info
-        
-          klasses           = objc.objc_classes
-          categories        = objc.objc_categories
-          protocols         = objc.objc_protocols
-          properties        = klasses.collect { |c| c.properties }.flatten
-          instance_methods  = klasses.collect { |c| c.instance_methods }.flatten + 
-                              categories.collect { |c| c.instance_methods }.flatten +
-                              protocols.collect { |p| p.instance_methods }.flatten
-          class_methods     = klasses.collect { |c| c.class_methods }.flatten + 
-                              categories.collect { |c| c.class_methods }.flatten + 
-                              protocols.collect { |p| p.class_methods }.flatten
-        
-          # TODO REFACTOR THIS
-        
-          # HEADER
-          puts '+' << ('-' * (cols - 2)) << '+'
-          header = "#{headers[:name]} | #{headers[:classes]} | #{headers[:properties]} | #{headers[:class_methods]} | #{headers[:instance_methods]}"
-          puts header
-        
-          # STATS 
-          puts '+' << ('-' * (cols - 2)) << '+'
-          name = pd.name.ljust(max_name_length, ' ')
-          puts "| #{blue(name)} | #{klasses.size.to_s.center(30)} | #{properties.size.to_s.center(21)} | #{class_methods.size.to_s.center(21)} | #{instance_methods.size.to_s.center(21)}"
-       
-          # PROPERTIES
-          puts '+' << ('-' * (cols - 2)) << '+'
-          puts properties.collect { |p| "| #{p.to_s.ljust(cols - 4)} |"}
-        
-          # CLASS METHODS
-          puts '+' << ('-' * (cols - 2)) << '+'
-          puts class_methods.collect { |cm| "| #{cm.name.ljust(cols - 4)} |"}
-       
-          # INSTANCE METHODS
-          puts '+' << ('-' * (cols - 2)) << '+'
-          puts instance_methods.collect { |im| "| #{im.name.ljust(cols - 4)} |"}
-        
-          # FOOTER
-          puts '+' << ('-' * (cols - 2)) << '+'
-          puts "\n\n"
-        end
-      
+
         puts yellow("=" * cols)
         puts "#{blue(total_classes.to_s)} TOTAL CLASSES"
         puts "#{blue(total_categories.to_s)} TOTAL CATEGORIES"
@@ -148,7 +113,12 @@ module Exposition
         puts "#{blue(total_instance_methods.to_s)} TOTAL INSTANCE METHODS"
         puts "#{blue(total_properties.to_s)} TOTAL PROPERTIES"
         puts yellow("=" * cols)
+        puts "\n\n"
       end
+    end
+    
+    def source_files
+      @source_files - @config.excludes
     end
     
     def sum(arr)

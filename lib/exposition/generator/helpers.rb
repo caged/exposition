@@ -20,6 +20,17 @@ module Exposition
         sym = %(<a href="#{documents_directory}/Protocols/#{sym}.html##{obj.ref}">#{obj.name}</a>) unless obj.nil?
         sym
       end
+      
+      def tasks_for_object(obj)
+        obj.members.inject({}) do |ret, mem|
+          task = mem.documentation.keywords.detect { |kw| kw.name == 'task' }
+          unless task.nil?
+            ret[task.body] ||= []
+            ret[task.body] << mem 
+          end
+          ret
+        end
+      end
     end
   end
 end

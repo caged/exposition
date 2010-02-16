@@ -10,15 +10,15 @@ grammar ObjCClasses
   end
 
   rule objc_class
-    docs:block_comment? class_start class_decleration members:(visibility / property / instance_method / class_method / empty_line)+ class_end <ObjCClass>
+    docs:block_comment? class_start class_decleration objc_members:(visibility / property / instance_method / class_method / empty_line)+ class_end <ObjCClass>
   end
   
   rule objc_category
-    docs:block_comment? class_start category_decleration members:(visibility / instance_method / class_method / empty_line)+ class_end <ObjCCategory>
+    docs:block_comment? class_start category_decleration objc_members:(visibility / instance_method / class_method / empty_line)+ class_end <ObjCCategory>
   end
   
   rule objc_protocol
-    docs:block_comment? line_break+ '@protocol' space+ protocol_name:type_name pcalls:protocols? members:(visibility / property / instance_method / class_method / empty_line)+ class_end <ObjCProtocol>
+    docs:block_comment? line_break+ '@protocol' space+ protocol_name:type_name pcalls:protocols? objc_members:(visibility / property / instance_method / class_method / empty_line)+ class_end <ObjCProtocol>
   end
   
   rule category_decleration

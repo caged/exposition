@@ -13,8 +13,12 @@ module ObjCClasses
       elements.each { |e| yield e }
     end
     
+    def members
+      methods + properties
+    end
+    
     def properties
-      members.elements.select { |e| e.is_a?(Property) }
+      objc_members.elements.select { |e| e.is_a?(Property) }
     end
     
     def methods
@@ -22,11 +26,11 @@ module ObjCClasses
     end
     
     def instance_methods
-     members.elements.select { |e| e.is_a?(InstanceMethod) }
+     objc_members.elements.select { |e| e.is_a?(InstanceMethod) }
     end
     
     def class_methods
-      members.elements.select { |e| e.is_a?(ClassMethod) }
+      objc_members.elements.select { |e| e.is_a?(ClassMethod) }
     end
     
     def class?

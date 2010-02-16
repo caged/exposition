@@ -35,6 +35,9 @@ module Exposition
     # The layout file for html based templates
     attr_accessor :layout
     
+    # Get loud during parsing
+    attr_accessor :verbose
+    
     def initialize
       self.project_name = ''
       self.show_stats = false
@@ -44,6 +47,7 @@ module Exposition
       self.generators = [:docset]
       self.templates_root = Pathname.new(File.join(File.dirname(__FILE__), 'templates'))
       self.layout = 'layout'
+      self.verbose = false
     end
     
     # TODO: Investigate why the Hash[*attrs] trick isn't working
