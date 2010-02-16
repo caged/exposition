@@ -14,26 +14,25 @@ module Comments
   end
   
   class BlockComment < Comment
-    include Enumerable
-    
-    def each
-      lines.elements.each { |e| yield e }
-    end
     
     def summary
       str = ''
-      str = select { |e| !e.is_a?(Keyword) }.collect do |line|
+      str = lines.elements.select { |e| !e.is_a?(Keyword) }.collect do |line|
         line.text_value.gsub(/^(\s\*\s?)/, '')
       end.join if defined?(lines)
       str
     end
     
     def params
-      select { |e| e.is_a?(Param) }
+      lines.elements.select { |e| e.is_a?(Param) }
     end 
     
     def keywords
-      select { |e| e.is_a?(Keyword)}
+      lines.elements.select { |e| e.is_a?(Keyword)}
+    end
+    
+    def lines
+      defined?(doc_lines) ? doc_lines : Treetop::Runtime::SyntaxNode.new("", 0..0, [])
     end
   end
   
@@ -48,9 +47,9 @@ module Comments
     
     def body
       str = ''
-      str = keyword_lines.elements.collect do |line|
+      str = lines.elements.collect do |line|
         line.text_value.gsub(/^(\s\*\s?)/, '')
-      end.join("\n") unless keyword_lines.nil?
+      end.join("\n") unless lines.nil?
       str
     end
   end

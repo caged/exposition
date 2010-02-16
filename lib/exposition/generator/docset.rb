@@ -28,11 +28,12 @@ module Exposition
         end
         
         def document_classes
-          klasses.each do |key, klass|
+          objc_classes.each do |key, klass|
             current_file = documents_directory + "Classes/#{klass.name}.html"
             @relative_assets = assets_relative_from_file(current_file.parent)
             @page_title = "#{klass.name} Class Reference"
             @object = klass
+            
             contents = erb :'objc-class'
             current_file.open('w') do |f|
               f << contents
@@ -41,7 +42,17 @@ module Exposition
         end
         
         def document_protocols
-          
+          objc_protocols.each do |key, klass|
+            current_file = documents_directory + "Protocols/#{klass.name}.html"
+            @relative_assets = assets_relative_from_file(current_file.parent)
+            @page_title = "#{klass.name} Protocol Reference"
+            @object = klass
+            
+            contents = erb :'objc-class'
+            current_file.open('w') do |f|
+              f << contents
+            end
+          end
         end
         
         def document_categories

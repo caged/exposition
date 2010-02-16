@@ -28,6 +28,18 @@ module ObjCClasses
     def class_methods
       members.elements.select { |e| e.is_a?(ClassMethod) }
     end
+    
+    def class?
+      is_a?(ObjCClass)
+    end
+    
+    def protocol?
+      is_a?(ObjCProtocol)
+    end
+    
+    def category?
+      is_a?(ObjCCategory)
+    end
   end
   
   class ObjCClass < ObjCObject
@@ -66,6 +78,10 @@ module ObjCClasses
   class ObjCProtocol < ObjCObject
     def name
       protocol_name.text_value.strip
+    end
+    
+    def conforms_to
+      pcalls
     end
     
     def self.symbol

@@ -1,8 +1,22 @@
 <table class="info" cellspacing="0" cellpadding="0">
+  <% if @object.class? %>
   <tr>
     <th>Inherits from</th>
-    <td><%= @object.superclass %></td>
+    <td><%= link_to_class(@object.superclass) %></td>
   </tr>
+  <% end %>
+  <% unless @object.conforms_to.empty? %>
+  <tr>
+    <th>Conforms to</th>
+    <td>
+      <ul>
+        <% @object.conforms_to.each do |pcall| %>
+        <li><%= link_to_protocol(pcall.name) %></li>
+        <% end %>
+      </ul>
+    </td>
+  </tr>
+  <% end %>
   <tr>
     <th>Related Sample Code</th>
     <td>

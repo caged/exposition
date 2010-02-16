@@ -27,7 +27,7 @@ grammar Comments
   end
   
   rule block_comment_keyword_line
-    param_start keyword_lines:keyword_body <Param> / keyword_start keyword_lines:keyword_body <Keyword>
+    param_start lines:keyword_body <Param> / keyword_start lines:keyword_body <Keyword>
   end
   
   rule keyword_start

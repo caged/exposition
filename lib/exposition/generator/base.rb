@@ -4,8 +4,7 @@ module Exposition
       include Exposition::Templates
       include Helpers
       
-      def initialize(parsed_docs, template, configuration)
-        @docs       = parsed_docs
+      def initialize(template, configuration)
         @template   = template.to_s
         @config     = configuration
         @symbols    = {
@@ -27,6 +26,10 @@ module Exposition
         @doc_root ||= Pathname.new(config.output_directory) + config.bundle_name
       end
       
+      def views_root
+        config.templates_root + template
+      end
+      
       def template
         @template
       end
@@ -35,15 +38,15 @@ module Exposition
         @config
       end
       
-      def klasses
+      def objc_classes
         @symbols[:objc_classes]
       end
       
-      def protocols
+      def objc_protocols
         @symbols[:objc_protocols]
       end
       
-      def categories
+      def objc_categories
         @symbols[:objc_categories]
       end
     
@@ -58,7 +61,7 @@ module Exposition
         end
         
         def reconcile_symbols
-          @docs.each do |source|
+          SymbolMapper.docs.each do |source|
             @symbols.keys.each do |objc_type|
               types = source.info.send(objc_type)
               types.each do |obj|

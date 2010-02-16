@@ -18,5 +18,9 @@ module Document
     def objc_protocols
       select { |e| e.is_a?(ObjCProtocol) }
     end
+    
+    def objc_objects
+      objc_classes + objc_categories + objc_protocols
+    end
   end
 end

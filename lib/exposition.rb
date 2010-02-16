@@ -15,6 +15,7 @@ dir = File.expand_path(File.dirname(__FILE__))
 $LOAD_PATH << dir
 
 require 'exposition/ext'
+require 'exposition/symbol_mapper'
 require 'exposition/parser'
 require 'exposition/templates'
 require 'exposition/generator'
@@ -29,7 +30,6 @@ module Exposition
     def initialize(*source_files)
       @config = Configuration.new
       @source_files = source_files
-      @parsed_docs = []
       @parser = Parser.new
     end
     
@@ -44,7 +44,7 @@ module Exposition
     end
     
     def run
-      run_parse
+      run_parse      
       run_generator
       run_stats
     end
@@ -65,9 +65,9 @@ module Exposition
         sf.location = file
         sf.info = doc
         sf.source = content
-        @parsed_docs << sf
+        SymbolMapper.docs << sf
       end
-      puts "\n\n\n"
+      puts "\n\n"
     end
     
     def run_generator
@@ -75,20 +75,20 @@ module Exposition
       generators.each do |generator, template|
         gen_name = generator.to_s.gsub(/\_+|\-+/, ' ').split.collect { |s| s.capitalize }
         gen = Exposition::Generators.module_eval("#{gen_name}", __FILE__, __LINE__)
-        gen::Generator.new(@parsed_docs, template, @config).generate
+        gen::Generator.new(template, @config).generate
       end
     end
     
     def run_stats
-      unless @config.show_stats
-        total_classes           = sum(@parsed_docs.collect { |doc| doc.info.objc_classes.size })
-        total_categories        = sum(@parsed_docs.collect { |doc| doc.info.objc_categories.size })
-        total_protocols         = sum(@parsed_docs.collect { |doc| doc.info.objc_protocols.size })
-        total_class_methods     = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.class_methods.size })})
-        total_instance_methods  = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.instance_methods.size })})
-        total_properties        = sum(@parsed_docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.properties.size })})
+      if @config.show_stats
+        total_classes           = sum(SymbolMapper.docs.collect { |doc| doc.info.objc_classes.size })
+        total_categories        = sum(SymbolMapper.docs.collect { |doc| doc.info.objc_categories.size })
+        total_protocols         = sum(SymbolMapper.docs.collect { |doc| doc.info.objc_protocols.size })
+        total_class_methods     = sum(SymbolMapper.docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.class_methods.size })})
+        total_instance_methods  = sum(SymbolMapper.docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.instance_methods.size })})
+        total_properties        = sum(SymbolMapper.docs.collect { |doc| sum(doc.info.objc_classes.collect { |c| c.properties.size })})
       
-        max_name_length = @parsed_docs.collect { |pd| pd.name.size }.max
+        max_name_length = SymbolMapper.docs.collect { |pd| pd.name.size }.max
         cols = `tput cols`.to_i
         headers = {
           :name => bold(red('NAME'.center(max_name_length + 2))),
@@ -98,7 +98,7 @@ module Exposition
           :instance_methods => bold(red('INSTANCE METHODS').center(30))
         }
       
-        @parsed_docs.each do |pd|
+        SymbolMapper.docs.each do |pd|
           objc = pd.info
         
           klasses           = objc.objc_classes
