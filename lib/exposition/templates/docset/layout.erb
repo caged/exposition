@@ -15,16 +15,18 @@
 	  <% end -%>
 	<% end %>
 </head>
-<body>
+<body class="<%= 'flowable' if defined?(flowable) %>">
   <!-- container -->
   <div id="container">
     <!-- header -->
     <div id="header">
       <div id="top-bar">
-        <h1><%= config.project_name %></h1>
+        <h1><%= link_to_project %></h1>
       </div>
       <div id="obj-bar">
+        <% unless defined?(hide_toc) %>
         <div id="toc-label">Table of Contents</div>
+        <% end %>
         <div id="main-label"><%= @page_title %></div>
         <div id="hdr-controls">
           <input type="search" results="10" />

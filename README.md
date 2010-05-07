@@ -1,6 +1,6 @@
 = exposition
 
-Description goes here.
+Objective-C documentation parser and docset generator
 
 == Note on Patches/Pull Requests
  

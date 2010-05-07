@@ -1,9 +1,8 @@
+  <!-- content -->
+  <div id="content">
       <!-- main -->
       <div id="main">
-        <div>
-          <h3>Welcome</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </div>
+        <%= config.main_overview %>
         
         <div class="block">
           <h3 class="block-head">Guides</h3>
@@ -30,32 +29,34 @@
       <!-- sbar -->
       <div id="sbar">
         <div class="obj-lists">
+          <% if objc_classes.any? %>
           <h3>Classes</h3>
           <ul class="obj-list">
-            <% %w(GITActor GITObject GITBlog GITCommit GITBranch GITError GITDateTime).each_with_index do |obj, index| %>
-            <li><a href="#" title=""><%= obj %></a></li>
+            <% objc_classes.each do |key, klass| %>
+            <li><%= link_to_class(klass.name) %></li>
             <% end %>
           </ul>
+          <% end %>
+          <% if objc_protocols.any? %>
           <h3>Protocols</h3>
           <ul class="obj-list">
-            <% %w(GITActor GITObject GITBlog GITCommit GITBranch GITError GITDateTime).each_with_index do |obj, index| %>
-            <li><a href="#" title=""><%= obj %></a></li>
+            <% objc_protocols.each do |key, klass| %>
+            <li><%= link_to_protocol(klass.name) %></li>
             <% end %>
           </ul>
+          <% end %>
+          <% if objc_categories.any? %>
           <h3>Categories</h3>
           <ul class="obj-list">
-            <% %w(GITActor GITObject GITBlog GITCommit GITBranch GITError GITDateTime).each_with_index do |obj, index| %>
-            <li><a href="#" title=""><%= obj %></a></li>
+            <% objc_categories.each do |key, klass| %>
+            <li><%= link_to_category(klass.name) %></li>
             <% end %>
           </ul>
-          <h3>Other</h3>
-          <ul class="obj-list">
-            <% %w(GITActor GITObject GITBlog GITCommit GITBranch GITError GITDateTime).each_with_index do |obj, index| %>
-            <li><a href="#" title=""><%= obj %></a></li>
-            <% end %>
-          </ul>
+          <% end %>
         </div>
-      </div>
+      </div>      
       <!-- /sbar -->
+    </div>
+    <!-- /content -->
 
 

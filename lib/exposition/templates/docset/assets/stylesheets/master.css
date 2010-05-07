@@ -108,6 +108,63 @@ a {
   border-bottom: 1px solid transparent;
 }
 
+
+/* CSS 3 Box Layout */
+body.flowable #content {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  -moz-box-orient: horizontal;
+  -webkit-box-orient: horizontal;
+  box-orient: horizontal;
+  -moz-box-pack: center;
+  -webkit-box-pack: center;
+  box-pack: center;
+}
+
+body.flowable #main {
+  position: static;
+	padding: 21px;
+	display : -moz-box;
+	display : -webkit-box;
+	display : box;
+	-moz-box-flex : 1;
+	-moz-box-orient : vertical;
+	-moz-box-direction : normal;
+	-webkit-box-flex : 1;
+	-webkit-box-orient : vertical;
+	-webkit-box-direction : normal;
+	box-flex : 1;
+	box-orient : vertical;
+	box-direction : normal;
+}
+
+body.flowable #sbar {
+  position: static;
+	padding: 21px 21px 21px 0;
+	width: 300px;
+}
+
+body.flowable #footer {
+  position: static;
+  padding: 3px 0;
+  border-top: 1px solid #fff;
+  background: #eee -webkit-gradient(linear, left top, left bottom, from(rgba(238,238,238,1)), to(rgba(204,204,204,1)));
+  background: #eee -moz-linear-gradient(top, rgba(238,238,238,1), rgba(204,204,204,1));
+  height: 18px;
+  text-shadow: 1px 1px rgba(255, 255, 255, 0.5);
+  width: 100%;
+  text-align: left;
+  -webkit-box-shadow: 0 -1px rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 -1px rgba(0,0,0,0.3);
+}
+
+body.flowable #footer #plug {
+  position: static;
+  float: right;
+  width: 120px;
+}
+
 /* @end */
 
 /*------------------------------------------------------------------------------------
@@ -148,10 +205,6 @@ code, pre code {
   height: 18px;
   text-shadow: 1px 1px rgba(255, 255, 255, 0.5);
   font-weight: bold;
-}
-
-#header h1 {
-  font-size: 130%;
 }
 
 #toc-label {
@@ -216,6 +269,21 @@ code, pre code {
 option.group {
   font-weight: bold;
 }*/
+/* @end */
+
+/*------------------------------------------------------------------------------------
+  @group header
+------------------------------------------------------------------------------------*/
+
+#header h1 {
+  font-size: 130%;
+}
+
+#header h1 a {
+  color: #fff;
+  text-decoration: none;
+}
+
 /* @end */
 
 /*------------------------------------------------------------------------------------
@@ -413,6 +481,93 @@ option.group {
   height: 0;
   clear: both;
   display: block;
+}
+
+/* @end */
+
+/*------------------------------------------------------------------------------------
+  @group page
+------------------------------------------------------------------------------------*/
+#sbar {
+
+}
+
+.obj-lists {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+}
+
+.obj-lists h3:first-child {
+  border-top: none;
+}
+
+.obj-lists h3 {
+  padding: 6px;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #fff;
+  text-shadow: 1px 1px #fff;
+  -webkit-box-shadow: 0 -1px 1px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 -1px 1px rgba(0,0,0,0.2);
+  box-shadow: 0 1px -1px rgba(0,0,0,0.2);
+  background: #fff -webkit-gradient(linear, left top, left bottom, from(rgba(238,238,238,0.5)), to(rgba(204,204,204,0.5)));
+  background: #fff -moz-linear-gradient(top, rgba(238,238,238,0.5), rgba(204,204,204,0.5));
+}
+
+.obj-lists h3:first-child {
+  border-top: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+ul.obj-list {
+  margin: 9px 0;
+}
+
+.obj-list li {
+  list-style-type: square;
+  padding: 3px;
+  margin-left: 9px;
+  list-style-position: inside;
+}
+
+div .block:first-child {
+  margin-top: 0;
+}
+
+.block {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  margin: 9px 0 9px 0;
+}
+
+#main .block h3 {
+  font-size: 130%;
+  padding: 6px;
+  border-bottom: 1px solid #ccc;
+  text-shadow: 1px 1px #fff;
+  background: #fff -webkit-gradient(linear, left top, left bottom, from(rgba(238,238,238,0.5)), to(rgba(204,204,204,0.5)));
+  background: #fff -moz-linear-gradient(top, rgba(238,238,238,0.5), rgba(204,204,204,0.5));
+  margin-bottom: 0;
+}
+
+.block-list li {
+  padding: 6px;
+  border-top: 1px solid #eee;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.block-list li:first-child {
+  border-top: none;
+}
+
+.block-list li a {
+  text-decoration: none;
 }
 
 /* @end */

@@ -38,6 +38,12 @@ module Exposition
     # Get loud during parsing
     attr_accessor :verbose
     
+    # Markdown Guides to include with the docset
+    attr_accessor :guides
+    
+    # Main overview text shown on home page
+    attr_accessor :main_overview
+    
     def initialize
       self.project_name = ''
       self.show_stats = false

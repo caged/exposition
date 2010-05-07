@@ -4,15 +4,15 @@
         <h3><%= @page_title %></h3>
         <%= partial('../common/info') %>
         
-        <% if @object.documentation -%>
-        <h4>Overview</h4>
+        <% if @object.documentation && @object.documentation.empty? -%>
+        <h4 id="overview">Overview</h4>
         <%= markdown(@object.documentation.summary) %>
         <% end -%>
         
         <% tasks = tasks_for_object(@object) %>        
         
         <% if tasks.any? %>
-        <h4>Tasks</h4>
+        <h4 id="tasks">Tasks</h4>
         <% tasks.each do |key, members| %>
         <h5 id="<%= id_for_task(key, @object) %>"><%= key %></h5>
         <ul class="members">

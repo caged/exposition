@@ -5,9 +5,9 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "exposition"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
-    gem.email = "justin@activereload.net"
+    gem.summary = %Q{Objective-C documentation parser and docset generator}
+    gem.description = %Q{Objective-C documenation parser and docset generator}
+    gem.email = "justin@labratrevenge.com"
     gem.homepage = "http://github.com/Caged/exposition"
     gem.authors = ["Caged"]
     gem.add_development_dependency "yard", ">= 0"

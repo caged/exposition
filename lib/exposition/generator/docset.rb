@@ -7,9 +7,11 @@ module Exposition
           create_docset_base_structure          
           copy_assets
           
-          document_classes
-          document_protocols
-          document_categories
+          create_index_document
+          
+          create_classes_documentation
+          create_protocols_documentation
+          create_categories_documentation
         end
         
         def resources_directory
@@ -27,7 +29,7 @@ module Exposition
           end
         end
         
-        def document_classes
+        def create_classes_documentation
           objc_classes.each do |key, klass|
             current_file = documents_directory + "Classes/#{klass.name}.html"
             @relative_assets = assets_relative_from_file(current_file.parent)
@@ -41,7 +43,7 @@ module Exposition
           end
         end
         
-        def document_protocols
+        def create_protocols_documentation
           objc_protocols.each do |key, klass|
             current_file = documents_directory + "Protocols/#{klass.name}.html"
             @relative_assets = assets_relative_from_file(current_file.parent)
@@ -55,8 +57,23 @@ module Exposition
           end
         end
         
-        def document_categories
+        def create_categories_documentation
           
+        end
+        
+        def create_index_document
+          current_file = documents_directory + "index.html"
+          @relative_assets = assets_relative_from_file(current_file.parent)
+          contents = erb :index, :locals => {
+            :objc_classes => objc_classes,
+            :objc_protocols => objc_protocols,
+            :objc_categories => objc_categories,
+            :flowable => true,
+            :hide_toc => true
+          }
+          current_file.open('w') do |f|
+            f << contents
+          end
         end
         
         # def create_nodes_file

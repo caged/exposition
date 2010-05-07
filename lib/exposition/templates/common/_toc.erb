@@ -2,13 +2,13 @@
       <div id="toc">
         <ul>
           <% unless @object.documentation.summary.empty? %>
-          <li><a href="#" title="Foo">Overview</a></li>
+          <li><a href="#overview" title="<%= @object.name %> Overview">Overview</a></li>
           <% end %>
           
           <% tasks = tasks_for_object(@object) %>        
           <% if tasks.any? %>
           <li>
-            <a href="#" title="Tasks">Tasks</a>
+            <a href="#tasks" title="<%= @object.name %> Tasks">Tasks</a>
             <ul>
             <% tasks.each do |key, members| %>
               <li><%= link_to_task(key, @object) %></li>
@@ -21,7 +21,7 @@
             <a href="#<%= anchor_for_collection(@object.properties) %>" title="Foo">Properties</a>
             <ul>
               <% @object.properties.each do |property| %>
-              <li><a href="#<%= property.ref %>" title=""><%= property.name %></a></li>
+              <li><a href="#<%= property.ref %>" title="">@<%= property.name %></a></li>
               <% end %>
             </ul>
           </li>

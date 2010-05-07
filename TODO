@@ -1,3 +1,14 @@
+* Respect ignored symbols and files
 * Function pointers, defines, etc.
 * Inline properties: @property NSUInteger one, two, three;
-* Documentation Generator
+* Markdown Guides
+* Breadcrumbs
+* Docset Symbol indexing and search
+* Web Search / Find as you git type
+* Helper script that generates a base config file for a project
+
+
+# DOWN THE ROAD IDEAS
+* Use Gist API for syncing guide contributions?
+* GitHub, SCM Integration RSS Feeds, cross site linking?
+* Edit in place or live preview?
