@@ -22,7 +22,7 @@ grammar ObjCClasses
   end
   
   rule category_decleration
-    class_name:type_name space* '(' space* type_name space* ')' space*
+    class_name:type_name space* '(' desc:((space* type_name space*)+)? ')' space*
   end
   
   rule class_decleration

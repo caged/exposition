@@ -58,7 +58,17 @@ module Exposition
         end
         
         def create_categories_documentation
-          
+          objc_categories.each do |key, klass|
+            current_file = documents_directory + "Categories/#{klass.cleaned_name}.html"
+            @relative_assets = assets_relative_from_file(current_file.parent)
+            @page_title = "#{klass.name} #{klass.category_name} Category Reference"
+            @object = klass
+            
+            contents = erb :'objc-class'
+            current_file.open('w') do |f|
+              f << contents
+            end
+          end
         end
         
         def create_index_document

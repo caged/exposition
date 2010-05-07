@@ -33,6 +33,10 @@ module ObjCClasses
       objc_members.elements.select { |e| e.is_a?(ClassMethod) }
     end
     
+    def conforms_to
+      []
+    end
+    
     def class?
       is_a?(ObjCClass)
     end
@@ -72,6 +76,18 @@ module ObjCClasses
   class ObjCCategory < ObjCObject
     def name
       category_decleration.class_name.text_value
+    end
+    
+    def category_name
+      category_decleration.desc.text_value
+    end
+    
+    def cleaned_name
+      "#{name}_#{category_name.strip.gsub(/\s+/, '')}"
+    end
+    
+    def ref
+      "//apple_ref/occ/#{self.class.symbol}/#{cleaned_name}"
     end
     
     def self.symbol

@@ -29,7 +29,7 @@ module Exposition
       
       def link_to_category(sym)
         obj = SymbolMapper.find(:objc_category, sym)
-        %(<a href="#{documents_directory}/Categories/#{sym}.html##{obj.ref}">#{obj.name}</a>) unless obj.nil?
+        %(<a href="#{documents_directory}/Categories/#{obj.cleaned_name}.html##{obj.ref}">#{obj.name} (#{obj.category_name})</a>) unless obj.nil?
       end
       
       def link_to_task(title, obj)

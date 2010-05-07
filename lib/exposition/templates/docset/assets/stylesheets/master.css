@@ -188,13 +188,13 @@ code, pre code {
 
 #top-bar {
   padding: 12px;
-  border-top: 1px solid #ccd1d7;
+  border-top: 1px solid #959fb5;
   border-bottom: 1px solid #111;
   color: #fff;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
   font-weight: normal;
-  background: #eee -webkit-gradient(linear, left top, left bottom, from(rgba(157, 167, 178, 1)), to(rgba(77, 95, 105, 1)));
-  background: #eee -moz-linear-gradient(top, rgba(157, 167, 178, 1), rgba(77, 95, 105, 1));
+  background: #495368 -webkit-gradient(linear, left top, left bottom, from(rgba(84, 95, 119, 1)), to(rgba(52, 59, 74, 1)));
+  background: #495368 -moz-linear-gradient(top, rgba(73, 83, 104, 1), rgba(52, 59, 74, 1));
 }
 
 #obj-bar {

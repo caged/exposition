@@ -20,7 +20,7 @@ module Comments
       str = lines.elements.select { |e| !e.is_a?(Keyword) }.collect do |line|
         line.text_value.gsub(/^(\s\*\s?)/, '')
       end.join if defined?(lines)
-      str
+      str.sub(/^\n/, '')
     end
     
     def params

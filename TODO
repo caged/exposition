@@ -1,10 +1,10 @@
 * Respect ignored symbols and files
+* Breadcrumbs
 * Function pointers, defines, etc.
 * Inline properties: @property NSUInteger one, two, three;
 * Markdown Guides
-* Breadcrumbs
 * Docset Symbol indexing and search
-* Web Search / Find as you git type
+* Web Search / Find as you type
 * Helper script that generates a base config file for a project
 
 
