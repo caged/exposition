@@ -21,6 +21,18 @@ module Exposition
         sym
       end
       
+      def link_to_task(title, obj)
+        dir = 'Classes' if obj.class?
+        dir = 'Prototcols' if obj.protocol?
+        dir = 'Categories' if obj.category?
+        
+        %(<a href="#{documents_directory}/#{dir}/#{obj.name}.html##{id_for_task(title, obj)}">#{title}</a>)
+      end
+      
+      def id_for_task(title, obj)
+        %(task-#{Digest::SHA1.hexdigest("#{obj}#{title}")})
+      end
+      
       def tasks_for_object(obj)
         obj.members.inject({}) do |ret, mem|
           task = mem.documentation.keywords.detect { |kw| kw.name == 'task' }

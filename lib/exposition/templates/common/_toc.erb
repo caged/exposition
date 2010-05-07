@@ -4,13 +4,18 @@
           <% unless @object.documentation.summary.empty? %>
           <li><a href="#" title="Foo">Overview</a></li>
           <% end %>
+          
+          <% tasks = tasks_for_object(@object) %>        
+          <% if tasks.any? %>
           <li>
-            <a href="#" title="Foo">Tasks</a>
+            <a href="#" title="Tasks">Tasks</a>
             <ul>
-              <li><a href="#" title="">Sending Get Requests</a></li>
-              <li><a href="#" title="">Setting Configuration Options</a></li>
+            <% tasks.each do |key, members| %>
+              <li><%= link_to_task(key, @object) %></li>
+            <% end %>
             </ul>
           </li>
+          <% end %>
           <% if @object.properties.any? %>
           <li>
             <a href="#<%= anchor_for_collection(@object.properties) %>" title="Foo">Properties</a>

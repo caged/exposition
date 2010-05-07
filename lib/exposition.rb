@@ -5,6 +5,7 @@ require 'builder'
 require 'pathname'
 require 'rdiscount'
 require 'erb'
+require 'digest/sha1'
 
 require 'term/ansicolor'
 require 'pp'

@@ -13,10 +13,10 @@
         <% if tasks.any? %>
         <h4>Tasks</h4>
         <% tasks.each do |key, members| %>
-        <h5><%= key %></h5>
+        <h5 id="<%= id_for_task(key, @object) %>"><%= key %></h5>
         <ul class="members">
           <% members.each do |member| %>
-          <li><a href="#<%= member.ref %>" title=""><%= member.name %></a> <% if member.is_a?(Properties::Property) %><span class="prop">property</span><% end %></li>
+          <li><a href="#<%= member.ref %>" title="<%= member.name %>"><%= member.name %></a> <% if member.is_a?(Properties::Property) %><span class="prop">property</span><% end %></li>
           <% end %>
         </ul>
         <% end %>

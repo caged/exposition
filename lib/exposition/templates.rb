@@ -1,5 +1,5 @@
 module Exposition
-  # Originally based on Sinatra
+  # Original version based on Sinatra
   module Templates
     def erb(view, options = {})
       render :erb, view, options
