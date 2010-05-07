@@ -16,7 +16,7 @@ context "Parsing Classes and Categories in Header Files" do
     assert_not_nil(c1.class_methods)
     assert_not_nil(c1.instance_methods)
     
-    doc_str = " This is some documentation for SampleClass."
-    assert_equal(c1.documentation[0, doc_str.length], doc_str)
+    doc_str = "This is some documentation for SampleClass."
+    assert_equal(doc_str, c1.documentation.summary[0, doc_str.length])
   end
 end

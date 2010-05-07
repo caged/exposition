@@ -28,7 +28,7 @@ module Methods
     end
     
     def return_type
-      method_body.return_type.text_value
+      method_body.return_type.text_value.strip
     end
     
     def owner
@@ -44,7 +44,7 @@ module Methods
     end
     
     def to_s
-      "#{is_a?(ClassMethod) ? '+' : '-'} #{method_body.text_value}"
+      "#{is_a?(ClassMethod) ? '+' : '-'} #{method_body.text_value}".gsub(/\s{2,}/, ' ')
     end
     
     def ref
