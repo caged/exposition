@@ -17,3 +17,4 @@
 * Source code embedding in documentation
 * Internationalization Support
 * JSON export.  Useful for integration into text editors,etc.
+* Link to Apple symbols.  Does Apple have a consistent linking scheme?

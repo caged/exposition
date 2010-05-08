@@ -1,8 +1,6 @@
 module Exposition
   module Generators
-    module Helpers
-      include ERB::Util
-      
+    module Helpers      
       def markdown(str)
         RDiscount.new(str).to_html
       end
@@ -15,25 +13,36 @@ module Exposition
         collection.first.class.symbol
       end
       
-      def link_to_project
-        %(<a href="#{documents_directory}/index.html">#{config.project_name}</a>)
+      def relative_link_to_project
+        project_path = documents_directory + 'index.html'
+        path = project_path.relative_path_from(current_file.parent)
+        %(<a href="#{path}">#{config.project_name}</a>)
       end
       
       def link_to_class(sym)
-        obj = SymbolMapper.find(:objc_class, sym)
-        sym = %(<a href="#{documents_directory}/Classes/#{sym}.html##{obj.ref}">#{obj.name}</a>) unless obj.nil?
+        if obj = SymbolMapper.find(:objc_class, sym)
+          to_file = Pathname.new("#{documents_directory}/Classes/#{sym}.html")
+          path = to_file.relative_path_from(current_file.parent)
+          sym = %(<a href="#{path}##{obj.ref}">#{obj.name}</a>)
+        end
         sym
       end
       
       def link_to_protocol(sym)
-        obj = SymbolMapper.find(:objc_protocol, sym)
-        sym = %(<a href="#{documents_directory}/Protocols/#{sym}.html##{obj.ref}">#{obj.name}</a>) unless obj.nil?
+        if obj = SymbolMapper.find(:objc_protocol, sym)
+          to_file = Pathname.new("#{documents_directory}/Protocols/#{sym}.html")
+          path = to_file.relative_path_from(current_file.parent)
+          sym = %(<a href="#{path}##{obj.ref}">#{obj.name}</a>)
+        end
         sym
       end
       
       def link_to_category(sym)
-        obj = SymbolMapper.find(:objc_category, sym)
-        sym = %(<a href="#{documents_directory}/Categories/#{obj.cleaned_name}.html##{obj.ref}">#{obj.name} (#{obj.category_name})</a>) unless obj.nil?
+        if obj = SymbolMapper.find(:objc_category, sym)
+          to_file = Pathname.new("#{documents_directory}/Categories/#{obj.cleaned_name}.html")
+          path = to_file.relative_path_from(current_file.parent)
+          sym = %(<a href="#{path}##{obj.ref}">#{obj.name} (#{obj.category_name})</a>)
+        end
         sym
       end
       

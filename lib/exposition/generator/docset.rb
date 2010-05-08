@@ -65,13 +65,10 @@ module Exposition
         def create_index_document
           current_file = documents_directory + "index.html"
           @relative_assets = assets_relative_from_file(current_file.parent)
+          define_current_file(current_file)
           contents = erb :index, :locals => {
-            :objc_classes => objc_classes,
-            :objc_protocols => objc_protocols,
-            :objc_categories => objc_categories,
             :flowable => true,
-            :hide_toc => true,
-            :current_file => current_file
+            :hide_toc => true
           }
           current_file.open('w') do |f|
             f << contents
@@ -133,15 +130,30 @@ module Exposition
             end
         end
         
+        # def current_file
+        #   Pathname.new('foo')
+        # end
+        
         private
           def assets_relative_from_file(file)
             @assets.collect do |asset|
               asset.relative_path_from(file)
             end
           end
+          
+          # TODO: A not so ugly way to do this?
+          def define_current_file(file)
+            @f = file
+            instance_eval do
+              def current_file
+                @f
+              end
+            end
+          end
         
           def write_object_file(file, locals = {})
-            env_locals = {:current_file => file}
+            define_current_file(file)
+            env_locals = {}
             contents = erb :'objc-class', :locals => env_locals.merge(locals)
             file.open('w') do |f|
               f << contents

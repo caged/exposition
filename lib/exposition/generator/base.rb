@@ -2,6 +2,7 @@ module Exposition
   module Generators
     class Base    
       include Exposition::Templates
+      include ERB::Util
       include Helpers
       
       def initialize(template, configuration)
@@ -28,10 +29,6 @@ module Exposition
       
       def views_root
         config.templates_root + template
-      end
-      
-      def bundle_root
-        Pathname.new(config.bundle_name)
       end
       
       def template
