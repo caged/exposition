@@ -12,6 +12,9 @@ module Exposition
           create_classes_documentation
           create_protocols_documentation
           create_categories_documentation
+          
+          create_info_plist
+          create_nodes_file
         end
         
         def resources_directory
@@ -35,11 +38,7 @@ module Exposition
             @relative_assets = assets_relative_from_file(current_file.parent)
             @page_title = "#{klass.name} Class Reference"
             @object = klass
-            
-            contents = erb :'objc-class'
-            current_file.open('w') do |f|
-              f << contents
-            end
+            write_object_file(current_file)
           end
         end
         
@@ -49,11 +48,7 @@ module Exposition
             @relative_assets = assets_relative_from_file(current_file.parent)
             @page_title = "#{klass.name} Protocol Reference"
             @object = klass
-            
-            contents = erb :'objc-class'
-            current_file.open('w') do |f|
-              f << contents
-            end
+            write_object_file(current_file)
           end
         end
         
@@ -63,11 +58,7 @@ module Exposition
             @relative_assets = assets_relative_from_file(current_file.parent)
             @page_title = "#{klass.name} #{klass.category_name} Category Reference"
             @object = klass
-            
-            contents = erb :'objc-class'
-            current_file.open('w') do |f|
-              f << contents
-            end
+            write_object_file(current_file)
           end
         end
         
@@ -79,26 +70,54 @@ module Exposition
             :objc_protocols => objc_protocols,
             :objc_categories => objc_categories,
             :flowable => true,
-            :hide_toc => true
+            :hide_toc => true,
+            :current_file => current_file
           }
           current_file.open('w') do |f|
             f << contents
           end
         end
         
-        # def create_nodes_file
-        #   root = Builder::XmlMarkup.new(:indent => 2)
-        #   root.nodes do |nodes|
-        #     @docs.each do |doc|
-        #       nodes.node do |n|
-        #         n.name doc.location
-        #       end
-        #     end
-        #   end
-        #   File.open(File.join(resources_directory, 'Nodes.xml'), 'w') do |f|
-        #     f << root.target!
-        #   end
+        def create_nodes_file
+          xml = Builder::XmlMarkup.new(:indent => 2)
+          xml.instruct!
+          xml.DocSetNodes :version => 1.0 do
+            xml.TOC do
+              xml.Node do
+                xml.Name "#{config.project_name} Documentation"
+                xml.Path 'index.html'
+              end
+            end
+          end
         
+          File.open(File.join(resources_directory, 'Nodes.xml'), 'w') do |f|
+            f << xml.target!
+          end
+        end
+        
+        def create_info_plist
+          plist_file = resources_directory.parent + 'Info.plist' # Contents Directory
+          
+          plist = Builder::XmlMarkup.new(:indent => 2)
+          plist.instruct!
+          plist.declare! :DOCTYPE, :plist, :PUBLIC, "-//Apple Computer//DTD PLIST 1.0//EN", "http://www.apple.com/DTDs/PropertyList-1.0.dtd"
+          plist.plist :version => 1.0 do
+            plist.dict do
+              plist.key 'CFBundleName'
+              plist.string "#{config.project_name} Documentation"
+              plist.key 'CFBundleIdentifier'
+              plist.string config.bundle_name
+              plist.key 'DocSetPublisherIdentifier'
+              plist.string config.publisher_identifier
+              plist.key 'DocSetPublisherName'
+              plist.string config.publisher_name
+            end
+          end          
+          
+          plist_file.open('w') do |f|
+            f << plist.target!
+          end
+        end
         
         def copy_assets
             template_dir = (config.templates_root + template)
@@ -114,11 +133,20 @@ module Exposition
             end
         end
         
-        def assets_relative_from_file(file)
-          @assets.collect do |asset|
-            asset.relative_path_from(file)
+        private
+          def assets_relative_from_file(file)
+            @assets.collect do |asset|
+              asset.relative_path_from(file)
+            end
           end
-        end
+        
+          def write_object_file(file, locals = {})
+            env_locals = {:current_file => file}
+            contents = erb :'objc-class', :locals => env_locals.merge(locals)
+            file.open('w') do |f|
+              f << contents
+            end
+          end
       end
     end
   end

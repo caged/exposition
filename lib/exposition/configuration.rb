@@ -44,6 +44,12 @@ module Exposition
     # Main overview text shown on home page
     attr_accessor :main_overview
     
+    # Publisher name
+    attr_accessor :publisher_name
+    
+    # Publisher identifier. Usually tld.yourcompany.documentation
+    attr_accessor :publisher_identifier
+    
     def initialize
       self.project_name = ''
       self.show_stats = false
@@ -54,6 +60,7 @@ module Exposition
       self.templates_root = Pathname.new(File.join(File.dirname(__FILE__), 'templates'))
       self.layout = 'layout'
       self.verbose = false
+      self.publisher_name = 'My Company'
     end
     
     # TODO: Investigate why the Hash[*attrs] trick isn't working

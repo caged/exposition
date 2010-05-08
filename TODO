@@ -3,12 +3,17 @@
 * Function pointers, defines, etc.
 * Inline properties: @property NSUInteger one, two, three;
 * Markdown Guides
+* Syntax Highlighting
 * Docset Symbol indexing and search
 * Web Search / Find as you type
 * Helper script that generates a base config file for a project
+* Support DocSetFeedURL
 
 
 # DOWN THE ROAD IDEAS
 * Use Gist API for syncing guide contributions?
 * GitHub, SCM Integration RSS Feeds, cross site linking?
 * Edit in place or live preview?
+* Source code embedding in documentation
+* Internationalization Support
+* JSON export.  Useful for integration into text editors,etc.

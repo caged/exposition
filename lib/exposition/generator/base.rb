@@ -30,6 +30,10 @@ module Exposition
         config.templates_root + template
       end
       
+      def bundle_root
+        Pathname.new(config.bundle_name)
+      end
+      
       def template
         @template
       end

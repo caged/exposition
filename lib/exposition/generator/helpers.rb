@@ -1,6 +1,8 @@
 module Exposition
   module Generators
     module Helpers
+      include ERB::Util
+      
       def markdown(str)
         RDiscount.new(str).to_html
       end
@@ -19,17 +21,20 @@ module Exposition
       
       def link_to_class(sym)
         obj = SymbolMapper.find(:objc_class, sym)
-        %(<a href="#{documents_directory}/Classes/#{sym}.html##{obj.ref}">#{obj.name}</a>) unless obj.nil?
+        sym = %(<a href="#{documents_directory}/Classes/#{sym}.html##{obj.ref}">#{obj.name}</a>) unless obj.nil?
+        sym
       end
       
       def link_to_protocol(sym)
         obj = SymbolMapper.find(:objc_protocol, sym)
-        %(<a href="#{documents_directory}/Protocols/#{sym}.html##{obj.ref}">#{obj.name}</a>) unless obj.nil?
+        sym = %(<a href="#{documents_directory}/Protocols/#{sym}.html##{obj.ref}">#{obj.name}</a>) unless obj.nil?
+        sym
       end
       
       def link_to_category(sym)
         obj = SymbolMapper.find(:objc_category, sym)
-        %(<a href="#{documents_directory}/Categories/#{obj.cleaned_name}.html##{obj.ref}">#{obj.name} (#{obj.category_name})</a>) unless obj.nil?
+        sym = %(<a href="#{documents_directory}/Categories/#{obj.cleaned_name}.html##{obj.ref}">#{obj.name} (#{obj.category_name})</a>) unless obj.nil?
+        sym
       end
       
       def link_to_task(title, obj)
