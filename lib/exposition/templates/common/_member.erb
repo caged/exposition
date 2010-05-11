@@ -1,5 +1,9 @@
 <li class="member">
-  <h5 class="member-name"><%= member.name %> <a name="<%= member.ref %>"></a></h5>
+  <h5 class="member-name"><%= member.name %> 
+    <% if member.is_a?(Methods::Method) %><a name="<%= member.body_of_method %>"></a>
+    <% else %><a name="<%= member.name %>"></a><% end %>
+    <a name="<%= member.ref %>"></a>
+  </h5>
   <%= markdown(member.documentation.summary) %>
   <p><code><%= member.to_s %></code></p>
   <% if member.is_a?(Methods::Method) && !member.params.empty? %>

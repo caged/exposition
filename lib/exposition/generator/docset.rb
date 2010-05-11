@@ -15,6 +15,7 @@ module Exposition
           
           create_info_plist
           create_nodes_file
+          create_tokens_file
         end
         
         def resources_directory
@@ -83,11 +84,43 @@ module Exposition
               xml.Node do
                 xml.Name "#{config.project_name} Documentation"
                 xml.Path 'index.html'
+                xml.Subnodes do
+                  
+                end
               end
             end
           end
         
           File.open(File.join(resources_directory, 'Nodes.xml'), 'w') do |f|
+            f << xml.target!
+          end
+        end
+        
+        def create_tokens_file
+          xml = Builder::XmlMarkup.new(:indent => 2)
+          xml.instruct!
+          xml.Tokens :version => 1.0 do
+            objc_classes.each_with_index do |objc_class, index|
+              objc_class = objc_class[1]
+              xml.File :path => path_for_object(objc_class) do
+                xml.Token do
+                  xml.TokenIdentifier objc_class.ref
+                end
+                objc_class.members.each do |method|
+                  xml.Token do
+                    xml.TokenIdentifier method.ref
+                    if method.is_a?(Methods::Method)
+                      xml.Anchor method.body_of_method
+                    else
+                      xml.Anchor method.name
+                    end
+                  end
+                end
+              end
+            end
+          end
+          
+          File.open(File.join(resources_directory, 'Tokens.xml'), 'w') do |f|
             f << xml.target!
           end
         end
@@ -135,6 +168,14 @@ module Exposition
         # end
         
         private
+          def path_for_object(obj)
+            dir = 'Classes' if obj.class?
+            dir = 'Prototcols' if obj.protocol?
+            dir = 'Categories' if obj.category?
+            name = obj.category? ? obj.clean_name : obj.name
+            "#{dir}/#{name}.html"
+          end
+          
           def assets_relative_from_file(file)
             @assets.collect do |asset|
               asset.relative_path_from(file)
