@@ -1,6 +1,7 @@
 module Exposition
   module Generators
     module DocSet
+      class DocsetUtilNotFoundError < StandardError; end
       class Generator < Exposition::Generators::Base
         def generate
           create_output_directory
@@ -16,14 +17,24 @@ module Exposition
           create_info_plist
           create_nodes_file
           create_tokens_file
+          
+          unless docsetutil.nil?
+            index_docset
+            generate_package
+            print_package_info if config.verbose
+          end
+        end
+        
+        def bundle_root
+          doc_root + config.bundle_name
         end
         
         def resources_directory
-          doc_root + 'Contents/Resources'
+          bundle_root + 'Contents/Resources'
         end
         
         def documents_directory
-          doc_root + resources_directory + 'Documents'
+          bundle_root + resources_directory + 'Documents'
         end
 
         def create_docset_base_structure
@@ -137,15 +148,48 @@ module Exposition
               plist.string "#{config.project_name} Documentation"
               plist.key 'CFBundleIdentifier'
               plist.string config.bundle_name
+              plist.key 'CFBundleShortVersionString'
+              plist.string config.version
+              plist.key 'CFBundleVersion'
+              plist.string config.version
               plist.key 'DocSetPublisherIdentifier'
               plist.string config.publisher_identifier
               plist.key 'DocSetPublisherName'
               plist.string config.publisher_name
+              if config.feed_url
+                plist.key 'DocSetFeedName'
+                plist.string "#{config.project_name} Documentation"
+                plist.key 'DocSetFeedURL'
+                plist.string config.feed_url
+              end
             end
           end          
           
           plist_file.open('w') do |f|
             f << plist.target!
+          end
+        end
+        
+        def index_docset
+          puts blue(bold("==> Indexing documentation.  This could take a while..."))
+          Open3.popen3 "#{docsetutil} index #{bundle_root}" do |stdin, stdout, stderr|
+            puts stdout.read
+          end
+        end
+        
+        def generate_package
+          if config.feed_url && config.download_url
+            puts blue(bold("==> Generating xar package and feed"))
+            package_command = %(#{docsetutil} package #{bundle_root} -atom "#{doc_root + 'docs.atom'}" -download-url "#{config.download_url}")
+            Open3.popen3 package_command do |stdin, stdout, stderr|
+              puts stdout.read
+            end
+          end
+        end
+        
+        def print_package_info
+          Open3.popen3 "#{docsetutil} dump #{bundle_root}" do |stdin, stdout, stderr|
+            puts stdout.read
           end
         end
         
@@ -197,6 +241,25 @@ module Exposition
             file.open('w') do |f|
               f << contents
             end
+          end
+          
+          def docsetutil
+              paths = [
+                '/Developer/usr/bin/docsetutil', 
+                '/usr/local/bin/docsetutil', 
+                '/usr/bin/docsetutil'
+              ]
+
+              @docsetutil ||= paths.detect do |p|
+                File.exists?(p) && Open3.popen3(p) do |stdin, stdout, stderr|
+                  stderr.gets.nil?
+                end
+              end
+            if @docsetutil.nil?
+              red("Unable to find docsetutil. Make sure it's in your $PATH.  I looked for it here #{paths.join(',')}")
+              red('Skipping keyword indexing, xar packaging and feed generation')
+            end
+            @docsetutil
           end
       end
     end

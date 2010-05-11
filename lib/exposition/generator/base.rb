@@ -24,7 +24,7 @@ module Exposition
       end
       
       def doc_root
-        @doc_root ||= Pathname.new(config.output_directory) + config.bundle_name
+        @doc_root ||= Pathname.new(config.output_directory)
       end
       
       def views_root

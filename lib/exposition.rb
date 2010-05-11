@@ -6,7 +6,7 @@ require 'pathname'
 require 'rdiscount'
 require 'erb'
 require 'digest/sha1'
-
+require 'open3'
 require 'term/ansicolor'
 require 'pp'
 
