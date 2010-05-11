@@ -3,30 +3,40 @@ grammar Properties
   include Language
   include Comments
   
+  # Any @property and the block comment directly above it
   rule property
     docs:block_comment? line_break space* prop:("@property" space* attrs:attributes* property_type protocols* '*'? space* prop_name:type_name ';') <Property>
   end
   
+  # Any valid property attributes
   rule attributes
     '(' space* (attribute_values ','* space*)+ space* ')' space* / space
   end
   
+  # Valid attribute values
   rule attribute_values
     ('nonatomic' / 'atomic' / 'retain' / 'copy' / 'assign' / 'readwrite' / 'readonly' / attributes_getter_setter)
   end
-    
+  
+  # Custom getter and setters  
   rule attributes_getter_setter
     ('g' / 's') 'etter' space* '=' space* prop_name:type_name
   end
   
+  # The property's type including IBOutlets
   rule property_type
     space* (ib_outlet / garbage_collection_modifiers)* space* type_name space*
   end
   
+  # Any garbage collection modifiers
+  # @property (nonatomic, retain) __weak Link *parent;
   rule garbage_collection_modifiers
     '__weak' / '__strong' / core_foundation_property
   end
   
+  # Any core foundation property that will be treated as a Objective-C object
+  # for memory management.
+  # @property(retain) __attribute__((NSObject)) CFDictionaryRef myDictionary;
   rule core_foundation_property
     '__attribute__((' type:type_name '))'
   end

@@ -1,26 +1,34 @@
 grammar Language
   include SourceFile
   
+  # Types in keyed arguments including any protocols. (NSString *), (CGFloat), (Foo<Foo,Bar,Baz>)
   rule obj_type
     space* '(' space* type_or_protocol:(type_name protocols / type_name space* ('*' '*'?)?) space* ')' space* <ObjectType>
   end
   
+  # Used in any place where we're matching a valid symbol
+  # Duplicate of arg_name for clarity in parsing grammars
   rule type_name
     [_a-zA-Z0-9]+
   end
   
+  # Duplicate of type_name for clarity in parsing grammars
+  # Matches Any valid symbol
   rule arg_name
     [_a-zA-Z0-9]+
   end
   
+  # Matches <Foo, Bar, Baz>
   rule protocols
     space* '<' type_names:(space* type_name ','* space* <Protocol>)+ space* '>' space* <Protocols>
   end
   
+  # Matches IBOutlets
   rule ib_outlet
     'IBOutlet'
   end
   
+  # Matches any reserved words
   rule reserved_words
     ('interface' / 'implementation' / 'synthesize' / 'protocol' / 'class' / 'optional' / 'required' / 'property' / 'dynamic')
   end

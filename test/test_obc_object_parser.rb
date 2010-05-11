@@ -2,7 +2,7 @@ require 'helper'
 
 context "Parsing Classes and Categories in Header Files" do
   setup do
-    @parser = ObjCClassesParser.new
+    @parser = ObjCObjectsParser.new
   end
   
   test 'parses objc class' do

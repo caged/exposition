@@ -1,8 +1,10 @@
 grammar Document
   include SourceFile
-  include ObjCClasses
+  include ObjCObjects
   include Comments
   
+  # An inline file comment, then a class, category or protocol then
+  # finishes up with empty lines, linebreaks, spaces and characters.
   rule contents
     (inline_comment / objc_object / empty_line / line_break / space / char)* <Doc>
   end

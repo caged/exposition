@@ -163,10 +163,6 @@ module Exposition
             end
         end
         
-        # def current_file
-        #   Pathname.new('foo')
-        # end
-        
         private
           def path_for_object(obj)
             dir = 'Classes' if obj.class?
@@ -183,6 +179,8 @@ module Exposition
           end
           
           # TODO: A not so ugly way to do this?
+          # This is needed so links in template can be relative to the location 
+          # of the current file we're in
           def define_current_file(file)
             @f = file
             instance_eval do
@@ -195,7 +193,7 @@ module Exposition
           def write_object_file(file, locals = {})
             define_current_file(file)
             env_locals = {}
-            contents = erb :'objc-class', :locals => env_locals.merge(locals)
+            contents = erb 'objc-object', :locals => env_locals.merge(locals)
             file.open('w') do |f|
               f << contents
             end

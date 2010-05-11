@@ -3,30 +3,37 @@ grammar Methods
   include Language
   include Comments
   
+  # Any instance or class method
   rule method
     instance_method / class_method
   end
   
+  # Instance methods and its block comment
   rule instance_method
     docs:block_comment? line_break '-' method_body <InstanceMethod>
   end
   
+  # Class methods and its block comment
   rule class_method
     docs:block_comment? line_break '+' method_body <ClassMethod>
   end
   
+  # The return type and everything up to the semicolon terminating the definition.
   rule method_body
     return_type:obj_type method_args ';'
   end
   
+  # Any method args including keyed arguments and variable length arguments
   rule method_args
     keyed_arg ',' space* variable_arg space* <Arguments> / keyed_arg+ <Arguments> / type_name
   end
   
+  # Any keyed argument
   rule keyed_arg
     line_break* space* arg_body:type_name ':' arg_type:obj_type arg_name space* <Argument>
   end
   
+  # Any variable length argument
   rule variable_arg
     '...' <VariableArgument>
   end

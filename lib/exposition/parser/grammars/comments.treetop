@@ -2,54 +2,69 @@ grammar Comments
   include SourceFile
   include Language
   
+  # Only used in testing
   rule test
     (inline_comment / block_comment  / line_break / space / char)*
   end
   
+  # Any // style comments
   rule inline_comment
     (line_break '//' (space / char)* space* &line_break)+ <InlineComment> 
   end
   
+  # Any block comment starting with /**
   rule block_comment
     comment_start lines:(block_comment_keyword_line / block_comment_text_line / block_comment_blank_line)+ comment_end <BlockComment>
   end
   
+  # The start of a block comment
   rule comment_start
     line_break space* "/**" space*
   end
   
+  # The end of a block comment
   rule comment_end
     line_break space* "*/" space* &line_break
   end
   
+  # Any blank line inside a block comment
   rule block_comment_blank_line
     line_break space* block_comment_line_seperator space* &(line_break)
   end
   
+  # Any @NAME param line and subsequent lines until we encounter a new param or
+  # the comment ends
   rule block_comment_keyword_line
     param_start lines:keyword_body <Param> / keyword_start lines:keyword_body <Keyword>
   end
   
+  # The start of a @NAME keyword
   rule keyword_start
     block_comment_line_start '@' attribute_name:(!reserved_words [a-zA-Z0-9_-]+) space 
   end
   
+  # Special @1, @2, @n... keywords that represent the index (starting at 1) 
+  # of the method parameter they are documenting
   rule param_start
     block_comment_line_start '@' attribute_name:(!reserved_words [0-9]+) space 
   end
   
+  # The text after a keyword.  Can be multiple lines.
   rule keyword_body
     (!keyword_start (char+ / block_comment_text_line / block_comment_blank_line))+
   end
   
+  # Any text line inside a block comment (non-keyword starting lines)
   rule block_comment_text_line
      block_comment_line_start text:char+ 
   end
   
+  # The start of a block comment line.  Usually " * "
   rule block_comment_line_start
     line_break space* block_comment_line_seperator space
   end
   
+  # The character used to seperate lines in a block comment
   rule block_comment_line_seperator
     "*"
   end

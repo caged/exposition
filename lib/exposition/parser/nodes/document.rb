@@ -1,7 +1,7 @@
 module Document  
   class Doc < Treetop::Runtime::SyntaxNode
     include Enumerable
-    include ObjCClasses
+    include ObjCObjects
     
     def each
       elements.each { |e| yield e }
