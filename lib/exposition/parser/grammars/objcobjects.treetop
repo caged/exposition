@@ -1,0 +1,69 @@
+grammar ObjCObjects
+  include SourceFile
+  include Language
+  include Methods
+  include Properties
+  include Comments
+  
+  # Any class, category or protocol
+  rule objc_object
+    objc_class / objc_category / objc_protocol
+  end
+
+  # Any class and the block comment directly above it
+  rule objc_class
+    docs:block_comment? class_start class_decleration objc_members:(visibility / property / instance_method / class_method / empty_line)+ class_end <ObjCClass>
+  end
+  
+  # Any category and the block comment directly above it
+  rule objc_category
+    docs:block_comment? class_start category_decleration objc_members:(visibility / instance_method / class_method / empty_line)+ class_end <ObjCCategory>
+  end
+  
+  # Any protocol and the block comment directly above it
+  rule objc_protocol
+    docs:block_comment? line_break+ '@protocol' space+ protocol_name:type_name pcalls:protocols? objc_members:(visibility / property / instance_method / class_method / empty_line)+ class_end <ObjCProtocol>
+  end
+  
+  # The start of any class decleration including any protocols in conforms to protocols.
+  # Also matches any instance variables inside {}
+  rule class_decleration
+    class_name:type_name space* ':' space* inheritance_and_protocol instance_variable_area
+  end
+  
+  # The start of any category name/desc
+  rule category_decleration
+    class_name:type_name space* '(' desc:((space* type_name space*)+)? ')' space*
+  end
+  
+  # The superclass and protocols
+  rule inheritance_and_protocol
+    superclass:type_name line_break* pcalls:protocols?
+  end
+  
+  # The collection of instance variables or empty lines inside a class decleration
+  rule instance_variable_area
+    line_break* space* '{' instance_variables:(instance_variable / empty_line)* '}'
+  end
+  
+  # A single instance variable inside a category decleration including any protocols
+  # they conform to
+  rule instance_variable
+    docs:block_comment? line_break space* type_name pcalls:protocols? space* '*'? space* ivar_name:type_name ';' &(line_break) <InstanceVariable>
+  end
+  
+  # The start of a class
+  rule class_start
+    line_break '@interface' space+ 
+  end
+  
+  # The end of a class  
+  rule class_end
+    line_break* '@end' space* line_break+
+  end
+  
+  # The visibility of properties
+  rule visibility
+    '@optional'
+  end
+end
