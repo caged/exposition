@@ -7,13 +7,13 @@ module Exposition
     attr_accessor :show_stats
     
     # Glob of files to include
-    attr_accessor :includes
+    attr_accessor :include_files
     
     # Glob of files exclude
-    attr_accessor :excludes
+    attr_accessor :exclude_files
     
     # Whether or not to add members (methods, properties, instance variables, etc) 
-    # to the documentation output
+    # to the documentation output that are understood to be private by convention
     attr_accessor :publish_underscored_members 
     
     # Which generators to use
@@ -53,8 +53,8 @@ module Exposition
     def initialize
       self.project_name = ''
       self.show_stats = false
-      self.includes   = []
-      self.excludes   = []
+      self.include_files = []
+      self.exclude_files = []
       self.publish_underscored_members = false
       self.generators = [:docset]
       self.templates_root = Pathname.new(File.join(File.dirname(__FILE__), 'templates'))

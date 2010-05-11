@@ -24,22 +24,22 @@ require 'exposition/configuration'
 
 module Exposition  
   class Documentation
-    attr_reader :config
+    attr_reader   :config
+    attr_accessor :source_files
     
-    def initialize(*source_files)
-      @source_files = source_files
+    def initialize
       @config = Configuration.new
       @parser = Parser.new
     end
     
     # Take a list of Pathname objects and parse for documentation.
-    def self.generate!(*source_files)
+    def self.generate!
       if block_given?
-        parser = new(*source_files)
+        parser = new
         yield parser.config
         parser.run
       else
-        new(*source_files).run
+        new.run
       end
     end
     
@@ -51,7 +51,7 @@ module Exposition
     
     private
       def run_parse
-        puts "Parsing #{@source_files.collect { |sf| File.basename(sf)  }.join(', ')}\n\n\n"
+        puts "Parsing #{source_files.collect { |sf| File.basename(sf)  }.join(', ')}\n\n\n"
         source_files.each_with_index do |file, index|
           progress = '=' * (index + 1) << ">"
           progress << "]".rjust(source_files.size - progress.size, "+")
@@ -120,7 +120,10 @@ module Exposition
       end
     
       def source_files
-        @source_files - @config.excludes
+        excludes = @config.exclude_files.collect { |sf| sf.to_s }        
+        @config.include_files.select do |sfile|
+          !excludes.include?(sfile.to_s)
+        end
       end
     
       def sum(arr)
