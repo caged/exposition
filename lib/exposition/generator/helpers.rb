@@ -47,11 +47,7 @@ module Exposition
       end
       
       def link_to_task(title, obj)
-        dir = 'Classes' if obj.class?
-        dir = 'Prototcols' if obj.protocol?
-        dir = 'Categories' if obj.category?
-        
-        %(<a href="#{documents_directory}/#{dir}/#{obj.name}.html##{id_for_task(title, obj)}">#{title}</a>)
+        %(<a href="#{documents_directory}/#{dir_for_object(obj)}/#{obj.name}.html##{id_for_task(title, obj)}">#{title}</a>)
       end
       
       def id_for_task(title, obj)

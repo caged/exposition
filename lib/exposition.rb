@@ -51,7 +51,7 @@ module Exposition
     
     private
       def run_parse
-        puts blue("==> Parsing Source Files")
+        puts blue(bold("==> Parsing Source Files"))
         puts "#{source_files.collect { |sf| File.basename(sf)  }.join(', ')}\n\n\n"
         source_files.each_with_index do |file, index|
           progress = '=' * (index + 1) << ">"
@@ -72,7 +72,6 @@ module Exposition
           sf.info = doc
           sf.source = content
           SymbolMapper.docs << sf
-        
         
           stats_for_doc(doc) if @config.verbose          
         end

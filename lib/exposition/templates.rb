@@ -14,11 +14,11 @@ module Exposition
       options.merge!(:layout => false)
       if collection = options.delete(:collection) then
         collection.inject([]) do |buffer, member|
-          buffer << erb(:"#{view}", options.merge(:layout =>
+          buffer << erb(view, options.merge(:layout =>
           false, :locals => {view_array[-1].to_sym => member}))
         end.join("\n")
       else
-        erb(view.to_s.to_sym, options)
+        erb(view, options)
       end
     end
     
