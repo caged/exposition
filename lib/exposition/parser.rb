@@ -8,27 +8,12 @@ module Exposition
   class Parser    
     def initialize
       @parser = DocumentParser.new
-      @percent_complete = 0
-      @complete = false
     end
     
     def parse(str)
       tree = @parser.parse(prepare_content_for_parse(str))
       raise ParseError, @parser if tree.nil?
       tree
-    end
-    
-    def complete?
-      @complete
-    end
-    
-    def completion_percentage
-      if @parser.index
-        ratio = @parser.index.to_f / @parser.input.size.to_f
-        percentage = (ratio * 100).floor
-        @percent_complete = percentage if percentage > @percent_complete
-      end
-      @percent_complete.to_s
     end
     
     def prepare_content_for_parse(content)

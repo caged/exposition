@@ -51,21 +51,21 @@ module Exposition
     
     private
       def run_parse
-        puts "Parsing #{source_files.collect { |sf| File.basename(sf)  }.join(', ')}\n\n\n"
+        puts blue("==> Parsing Source Files")
+        puts "#{source_files.collect { |sf| File.basename(sf)  }.join(', ')}\n\n\n"
         source_files.each_with_index do |file, index|
           progress = '=' * (index + 1) << ">"
           progress << "]".rjust(source_files.size - progress.size, "+")
           progress = " [" << progress
         
           unless @config.verbose
-            puts "\c[[FParsing #{index + 1} of #{source_files.size}:" << red(progress)
+            puts "\c[[F#{index + 1} of #{source_files.size}:" << red(progress)
           else
             puts red(underscore("#{file.basename} #{index + 1} of #{source_files.size}"))
           end
         
           content = File.read(file)
           doc = @parser.parse(content)
-          raise ParseError, @parser unless doc
                 
           sf = SourceFile.new
           sf.location = file

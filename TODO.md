@@ -1,13 +1,13 @@
+# Planned / In Development
 * Respect ignored symbols and files
 * Breadcrumbs
 * Function pointers, defines, etc.
 * Inline properties: @property NSUInteger one, two, three;
 * Markdown Guides
 * Syntax Highlighting
-* Docset Symbol indexing and search
+* [DONE] Docset Symbol indexing and search
 * Web Search / Find as you type
-* Helper script that generates a base config file for a project
-* Support DocSetFeedURL
+* [DONE] Support DocSetFeedURL
 
 
 # DOWN THE ROAD IDEAS
@@ -17,4 +17,4 @@
 * Source code embedding in documentation
 * Internationalization Support
 * JSON export.  Useful for integration into text editors,etc.
-* Link to Apple symbols.  Does Apple have a consistent linking scheme?
+* Link to Apple symbols.  Does Apple have a linking scheme that can be automated?
