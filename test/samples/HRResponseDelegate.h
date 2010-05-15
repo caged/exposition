@@ -1,11 +1,3 @@
-//
-//  HRResponseDelegate.h
-//  HTTPRiot
-//
-//  Created by Justin Palmer on 6/24/09.
-//  Copyright 2009 LabratRevenge LLC.. All rights reserved.
-//
-
 /**
  * Implementing the HRResponseDelegate protocol allows you to handle requests.  
  */

@@ -1,15 +1,3 @@
-//
-//  GITActor+Parsing.h
-//  Git.framework
-//
-//  Created by Geoff Garside on 10/01/2010.
-//  Copyright 2010 Geoff Garside. All rights reserved.
-//
-
-#import <Foundation/Foundation.h>
-#import "GITActor.h"
-
-
 /**
  * This category provides additional initialisers for GITActor.
  *

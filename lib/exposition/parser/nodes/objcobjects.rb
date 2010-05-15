@@ -101,7 +101,7 @@ module ObjCObjects
     end
     
     def conforms_to
-      pcalls
+      pcalls.is_a?(Language::Protocols) ? pcalls : []
     end
     
     def self.symbol

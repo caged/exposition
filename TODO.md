@@ -11,6 +11,7 @@
 
 
 # DOWN THE ROAD IDEAS
+* HTML 5 Slideshow Support
 * Use Gist API for syncing guide contributions?
 * GitHub, SCM Integration RSS Feeds, cross site linking?
 * Edit in place or live preview?

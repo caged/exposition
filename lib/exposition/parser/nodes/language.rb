@@ -37,6 +37,10 @@ module Language
     def each
       type_names.elements.each { |e| yield e }
     end
+    
+    def [](idx)
+      type_names.elements[idx]
+    end
   end
   
   class Protocol < Treetop::Runtime::SyntaxNode
