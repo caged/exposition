@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+// Some other File Comment
+// That I wrote here
 
 typedef enum {
     GITObjectTypeUnknown = 0,

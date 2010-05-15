@@ -1,6 +1,6 @@
 require 'helper'
 
-context "Parsing Classes and Categories in Header Files" do
+context "Parsing Classes, Categories and Protocols in Header Files" do
   setup do
     @parser = ObjCObjectsParser.new
     @klass = parse_file('SampleClass')
@@ -18,7 +18,7 @@ context "Parsing Classes and Categories in Header Files" do
     assert_not_nil(cl.instance_methods)
     
     doc_str = "This is some documentation for SampleClass."
-    assert_equal(doc_str, cl.documentation.summary[0, doc_str.length])
+    assert_equal(doc_str, cl.documentation.text[0, doc_str.length])
   end
   
   test 'parses protocols conforming to' do

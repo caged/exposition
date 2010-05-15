@@ -12,6 +12,10 @@ grammar Comments
     (line_break '//' (space / char)* space* &line_break)+ <InlineComment> 
   end
   
+  # rule inline_block_comment
+  #   comment_start (space / char)+ space "*/" line_break <BlockComment>
+  # end
+  
   # Any block comment starting with /**
   rule block_comment
     comment_start lines:(block_comment_keyword_line / block_comment_text_line / block_comment_blank_line)+ comment_end <BlockComment>

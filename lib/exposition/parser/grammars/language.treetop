@@ -1,9 +1,9 @@
 grammar Language
   include SourceFile
   
-  # Types in keyed arguments including any protocols. (NSString *), (CGFloat), (Foo<Foo,Bar,Baz>)
+  # Types in keyed arguments including any protocols. (NSString *), (CGFloat), (Foo<Foo,Bar,Baz>), (struct _NSRect)
   rule obj_type
-    space* '(' space* type_or_protocol:(type_name protocols / type_name space* ('*' '*'?)?) space* ')' space* <ObjectType>
+    space* '(' space* (ansi_c_words space+)? type_or_protocol:(type_name protocols / type_name space* ('*' '*'?)?) space* ')' space* <ObjectType>
   end
   
   # Used in any place where we're matching a valid symbol
@@ -31,5 +31,9 @@ grammar Language
   # Matches any reserved words
   rule reserved_words
     ('interface' / 'implementation' / 'synthesize' / 'protocol' / 'class' / 'optional' / 'required' / 'property' / 'dynamic')
+  end
+  
+  rule ansi_c_words
+    'struct' / 'signed' / 'unsigned' / 'long' / 'static' / 'enum' / 'extern' / 'char' / 'register' / 'typedef' / 'union' / 'void'
   end
 end

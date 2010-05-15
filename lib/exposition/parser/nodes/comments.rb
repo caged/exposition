@@ -8,14 +8,17 @@ module Comments
   end
   
   class InlineComment < Comment
-    def summary
-      text_value
+    def text
+      lines.join("\n")
+    end
+    
+    def lines
+      text_value.split("\n").collect { |line| line.sub(/^\/\/\s/, '') }
     end
   end
   
   class BlockComment < Comment
-    
-    def summary
+    def text
       str = ''
       str = lines.elements.select { |e| !e.is_a?(Keyword) }.collect do |line|
         line.text_value.gsub(/^(\s\*\s?)/, '')

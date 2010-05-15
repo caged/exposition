@@ -1,0 +1,17 @@
+/**
+ * Creates and returns an object of the \a type specified composed of the \a data within the \a repo.
+ *
+ * In the event that an error occurrs while creating the object the \a error will describe the nature of the
+ * error which occurred.
+ *
+ * This method is essentially a dispatcher, based on the \a type provided the default initializer for the
+ * correct GITObject subtype will be called to create the correct representation and return the new object.
+ *
+ * @1 The type of the object to create
+ * @2 The data composing the object
+ * @3 The SHA1 hash of the object
+ * @4 The repository the object is a member of
+ * @5 NSError describing the error which occurred
+ * @return object from the \a type from the \a data
+ * @task Initialisers
+ */

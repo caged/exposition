@@ -34,7 +34,8 @@ class Test::Unit::TestCase
   end
   
   def parse_file(filename)
-    path = File.expand_path(File.join(File.dirname(__FILE__), "samples", "#{filename}.h"))
+    filename = filename == 'comment' ? 'comment' : "#{filename}.h"
+    path = File.expand_path(File.join(File.dirname(__FILE__), "samples", filename))
     file = prepare_content_for_parse(File.read(path))
     parse(file)
   end

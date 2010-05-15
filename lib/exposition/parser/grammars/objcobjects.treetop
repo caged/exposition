@@ -12,17 +12,17 @@ grammar ObjCObjects
 
   # Any class and the block comment directly above it
   rule objc_class
-    docs:block_comment? class_start class_decleration objc_members:(visibility / property / instance_method / class_method / empty_line)+ class_end <ObjCClass>
+    docs:block_comment? class_start class_decleration objc_members:(visibility / property / instance_method / class_method / inline_comment / empty_line)+ class_end <ObjCClass>
   end
   
   # Any category and the block comment directly above it
   rule objc_category
-    docs:block_comment? class_start category_decleration objc_members:(visibility / instance_method / class_method / empty_line)+ class_end <ObjCCategory>
+    docs:block_comment? class_start category_decleration objc_members:(visibility / instance_method / class_method / inline_comment / empty_line)+ class_end <ObjCCategory>
   end
   
   # Any protocol and the block comment directly above it
   rule objc_protocol
-    docs:block_comment? line_break+ '@protocol' space+ protocol_name:type_name pcalls:protocols? objc_members:(visibility / property / instance_method / class_method / empty_line)+ class_end <ObjCProtocol>
+    docs:block_comment? line_break+ '@protocol' space+ protocol_name:type_name pcalls:protocols? objc_members:(visibility / property / instance_method / class_method / inline_comment / empty_line)+ class_end <ObjCProtocol>
   end
   
   # The start of any class decleration including any protocols in conforms to protocols.
@@ -49,12 +49,12 @@ grammar ObjCObjects
   # A single instance variable inside a category decleration including any protocols
   # they conform to
   rule instance_variable
-    docs:block_comment? line_break space* type_name pcalls:protocols? space* '*'? space* ivar_name:type_name ';' &(line_break) <InstanceVariable>
+    docs:block_comment? line_break space* (ansi_c_words space+)? type_name pcalls:protocols? space* '*'? space* ivar_name:type_name ';' &(line_break) <InstanceVariable>
   end
   
   # The start of a class
   rule class_start
-    line_break '@interface' space+ 
+    line_break* '@interface' space+ 
   end
   
   # The end of a class  

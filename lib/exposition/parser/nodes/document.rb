@@ -2,9 +2,14 @@ module Document
   class Doc < Treetop::Runtime::SyntaxNode
     include Enumerable
     include ObjCObjects
+    include Comments
     
     def each
       elements.each { |e| yield e }
+    end
+    
+    def file_comment
+      detect { |e| e.is_a?(InlineComment)}
     end
     
     def objc_classes

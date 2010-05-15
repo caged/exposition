@@ -48,4 +48,8 @@ module Language
       type_name.text_value.strip
     end
   end
+  
+  class DebugNode < Treetop::Runtime::SyntaxNode
+    
+  end
 end
