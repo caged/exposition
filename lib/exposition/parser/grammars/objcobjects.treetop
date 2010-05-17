@@ -22,7 +22,7 @@ grammar ObjCObjects
   
   # Any protocol and the block comment directly above it
   rule objc_protocol
-    docs:block_comment? line_break+ '@protocol' space+ protocol_name:type_name pcalls:protocols? objc_members:(visibility / property / instance_method / class_method / inline_comment / empty_line)+ class_end <ObjCProtocol>
+    docs:block_comment? line_break* '@protocol' space+ protocol_name:type_name pcalls:protocols? objc_members:(visibility / property / instance_method / class_method / inline_comment / empty_line)+ class_end <ObjCProtocol>
   end
   
   # The start of any class decleration including any protocols in conforms to protocols.

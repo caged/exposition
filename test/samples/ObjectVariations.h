@@ -1,31 +1,11 @@
-/**
- * Object With C structs
- */
-@interface ITWebScroller : NSScroller
-{
-    struct UIScrollBar *mUIScrollBar;
-    ITWebScroller *mPeer;
-    struct ITScrollBar *mScrollBar;
-}
-- (id)initWithFrame:(struct _NSRect)arg1;
-- (void)setPeer:(id)arg1;
-- (void)setFrame:(struct _NSRect)arg1;
-- (void)drawRect:(struct _NSRect)arg1;
-- (void)syncScrollBar;
-- (void)setNeedsDisplayInRect:(struct _NSRect)arg1;
-- (void)dealloc;
-@end
-
-
-
-@interface ITNSMenuItemProxy : NSObject <NSValidatedUserInterfaceItem>
-{
-    int _tag;
-    SEL _action;
-}
-
-- (id)initWithAction:(SEL)arg1;
-- (SEL)action;
-- (int)tag;
-
+@protocol TODBrowserPlugInController
+- (id)version;
+- (id)mainWebView;
+- (id)webViews;
+- (id)plugInSupportDirPath;
+- (void)loadRequest:(id)arg1 inNewTabInBackground:(BOOL)arg2;
+- (void)loadRequest:(id)arg1 inNewWindowInBackground:(BOOL)arg2;
+- (void)showStatusText:(id)arg1;
+- (void)registerForUserscriptExecutionInWebView:(id)arg1;
+- (void)unregisterForUserscriptExecutionInWebView:(id)arg1;
 @end
