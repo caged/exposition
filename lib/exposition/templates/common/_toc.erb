@@ -1,7 +1,7 @@
       <!-- toc -->
       <div id="toc">
         <ul>
-          <% unless @object.documentation.summary.empty? %>
+          <% unless @object.documentation.text.empty? %>
           <li><a href="#overview" title="<%= @object.name %> Overview">Overview</a></li>
           <% end %>
           

@@ -4,7 +4,7 @@
     <% else %><a name="<%= member.name %>"></a><% end %>
     <a name="<%= member.ref %>"></a>
   </h5>
-  <%= markdown(member.documentation.summary) %>
+  <%= markdown(member.documentation.text) %>
   <p><code><%= member.to_s %></code></p>
   <% if member.is_a?(Methods::Method) && !member.params.empty? %>
   <h6>Parameters</h6>
