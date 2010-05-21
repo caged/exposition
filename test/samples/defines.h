@@ -25,6 +25,10 @@
 #define _GTMDevLog(...) NSLog(__VA_ARGS__)
 #define NSIntegerMax    LONG_MAX
 
+// Should I match these?
+#define FooBar
+#define __FOO_BAR_
+
 #define STATUS_MENU_ITEM_DEFAULT_PREFS  @"StatusMenuItemDefaultPrefs"
 #define PREF_GROUP_STATUS_MENU_ITEM     @"Status Menu Item"
 #define KEY_STATUS_MENU_ITEM_ENABLED    @"Status Menu Item Enabled"

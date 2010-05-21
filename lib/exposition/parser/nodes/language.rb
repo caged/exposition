@@ -20,7 +20,17 @@ module Language
   end
   
   class Define < Documentable
+    def name
+      type_name.text_value
+    end
     
+    def function?
+      body.respond_to?(:args)
+    end
+    
+    def args
+      function? ? body.args.text_value.split(',').collect { |a| a.strip } : []
+    end
   end
   
   class ObjectType < Treetop::Runtime::SyntaxNode
