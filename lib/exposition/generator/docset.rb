@@ -12,6 +12,7 @@ module Exposition
           create_classes_documentation
           create_protocols_documentation
           create_categories_documentation
+          create_defines_documentation
           
           create_info_plist
           create_nodes_file
@@ -86,6 +87,10 @@ module Exposition
             current_file.open('w') do |f|
               f << contents
             end
+          end
+          
+          def create_defines_documentation
+            puts defines
           end
         
           def create_nodes_file

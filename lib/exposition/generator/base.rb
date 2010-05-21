@@ -11,7 +11,8 @@ module Exposition
         @symbols    = {
           :objc_classes     => {},
           :objc_categories  => {},
-          :objc_protocols   => {}
+          :objc_protocols   => {},
+          :defines          => {}
         }
         @assets     = []
         @properties = config
@@ -49,6 +50,10 @@ module Exposition
       
       def objc_categories
         @symbols[:objc_categories]
+      end
+      
+      def defines
+        @symbols[:defines]
       end
     
       private
