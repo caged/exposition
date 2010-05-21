@@ -49,7 +49,7 @@ grammar ObjCObjects
   # A single instance variable inside a category decleration including any protocols
   # they conform to
   rule instance_variable
-    docs:block_comment? line_break space* (ansi_c_words space+)? type_name pcalls:protocols? space* '*'? space* ivar_name:type_name ';' &(line_break) <InstanceVariable>
+    docs:block_comment? line_break space* (reserved_c_words space+)? type_name pcalls:protocols? space* '*'? space* ivar_name:type_name ';' &(line_break) <InstanceVariable>
   end
   
   # The start of a class

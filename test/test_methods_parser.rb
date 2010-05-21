@@ -36,6 +36,20 @@ context "Parsing Methods Declared in Header Files" do
     assert_equal("- didMoveToPhoto:fromPhoto:", m1.name)
   end
   
+  test 'parses methods with crazy spacing' do
+    m1 = parse("\n-(BOOL)shortcutValidator:(id)arg1 isKeyCode:(short) arg2 andFlagsTaken:(unsigned int) arg3 reason: (id *)arg4;")
+    assert_equal("- shortcutValidator:isKeyCode:andFlagsTaken:reason:", m1.name)
+
+    args = m1.arguments
+    assert_equal(4, args.count)
+    assert_equal('id', args.first.type.name)
+    assert_equal('arg1', args.first.name)
+    assert_equal('short', args[1].type.name)
+    assert_equal('arg2', args[1].name)
+    assert_equal('unsigned int', args[2].type.name)
+    assert_equal('arg3', args[2].name)
+  end
+  
   test 'parses methods with variable number of arguments' do
     m1 = parse("\n- (void) appendObjects:(id) firstObject,...;")
     

@@ -19,9 +19,16 @@ module Language
     end
   end
   
+  class Define < Documentable
+    
+  end
+  
   class ObjectType < Treetop::Runtime::SyntaxNode
     def name
-      type_or_protocol.type_name.text_value
+      pf, sf = "", ""
+      pf = c_words.text_value unless c_words.nil?
+      sf = type_or_protocol.type_name.text_value
+      pf + sf
     end
         
     def conforms_to
@@ -47,9 +54,5 @@ module Language
     def name
       type_name.text_value.strip
     end
-  end
-  
-  class DebugNode < Treetop::Runtime::SyntaxNode
-    
   end
 end

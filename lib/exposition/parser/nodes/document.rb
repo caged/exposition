@@ -1,6 +1,7 @@
 module Document  
   class Doc < Treetop::Runtime::SyntaxNode
     include Enumerable
+    include Language
     include ObjCObjects
     include Comments
     
@@ -26,6 +27,10 @@ module Document
     
     def objc_objects
       objc_classes + objc_categories + objc_protocols
+    end
+    
+    def defines
+      select { |e| e.is_a?(Define) }
     end
   end
 end

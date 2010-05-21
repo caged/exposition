@@ -4,7 +4,7 @@ grammar Language
   # Types in keyed arguments including any protocols. (NSString *), (CGFloat), (Foo<Foo,Bar,Baz>), (struct _NSRect)
   # (void *)
   rule obj_type
-    space* '(' space* (ansi_c_words space+)? type_or_protocol:(type_name protocols / type_name space* ('*' '*'?)?)? space* '*'? space* ')' space* <ObjectType>
+    space* '(' space* c_words:(reserved_c_words space+)? type_or_protocol:(type_name protocols / type_name space* ('*' '*'?)?)? space* '*'? space* ')' space* <ObjectType>
   end
   
   # Used in any place where we're matching a valid symbol
@@ -24,17 +24,27 @@ grammar Language
     space* '<' type_names:(space* type_name ','* space* <Protocol>)+ space* '>' space* <Protocols>
   end
   
+  # Matches defines.  #defines as functions must not have a space after the type name.
+  # #define FooBar(arg, arg2) will be matches as a function.  #define FooBar (25 * 30) will not.
+  rule define
+    docs:block_comment? line_break space* '#define' space+ type_name (define_args / space+ char* &eol)  <Define>
+  end
+  
+  rule define_args
+    '(' space* ((type_name / '...') space* ','* space*)+ space* ')'
+  end
+  
   # Matches IBOutlets
   rule ib_outlet
     'IBOutlet'
   end
   
   # Matches any reserved words
-  rule reserved_words
+  rule reserved_objc_words
     ('interface' / 'implementation' / 'synthesize' / 'protocol' / 'class' / 'optional' / 'required' / 'property' / 'dynamic')
   end
   
-  rule ansi_c_words
+  rule reserved_c_words
     'struct' / 'signed' / 'unsigned' / 'long' / 'static' / 'enum' / 'extern' / 'char' / 'register' / 'typedef' / 'union' / 'void' / 'short'
   end
 end
