@@ -55,7 +55,8 @@ module Exposition
       end
       
       def tasks_for_object(obj)
-        obj.members.inject({}) do |ret, mem|
+        members = obj.respond_to?(:members) ? obj.members : obj
+        members.inject({}) do |ret, mem|
           task = mem.documentation.keywords.detect { |kw| kw.name == 'task' }
           unless task.nil?
             ret[task.body] ||= []

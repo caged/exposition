@@ -30,24 +30,24 @@
           <% if objc_classes.any? %>
           <h3>Classes</h3>
           <ul class="obj-list">
-            <% objc_classes.each do |key, klass| %>
-            <li><%= link_to_class(klass.name) %></li>
+            <% objc_classes.each do |key, symbol| %>
+            <li><%= link_to_class(symbol[:object].name) %></li>
             <% end %>
           </ul>
           <% end %>
           <% if objc_protocols.any? %>
           <h3>Protocols</h3>
           <ul class="obj-list">
-            <% objc_protocols.each do |key, klass| %>
-            <li><%= link_to_protocol(klass.name) %></li>
+            <% objc_protocols.each do |key, symbol| %>
+            <li><%= link_to_protocol(symbol[:object].name) %></li>
             <% end %>
           </ul>
           <% end %>
           <% if objc_categories.any? %>
           <h3>Categories</h3>
           <ul class="obj-list">
-            <% objc_categories.each do |key, klass| %>
-            <li><%= link_to_category(klass.name) %></li>
+            <% objc_categories.each do |key, symbol| %>
+            <li><%= link_to_category(symbol[:object].name) %></li>
             <% end %>
           </ul>
           <% end %>

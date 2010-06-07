@@ -50,7 +50,7 @@ module Exposition
     end
     
     private
-      def run_parse
+      def run_parse        
         puts blue(bold("==> Parsing Source Files"))
         puts "#{source_files.collect { |sf| File.basename(sf)  }.join(', ')}\n\n\n"
         source_files.each_with_index do |file, index|
@@ -59,7 +59,7 @@ module Exposition
           progress = " [" << progress
         
           unless @config.verbose
-            puts "\c[[F#{index + 1} of #{source_files.size}:" << red(progress)
+            puts blue("\c[[F#{index + 1} of #{source_files.size} =>#{progress}")
           else
             puts red(underscore("#{file.basename} #{index + 1} of #{source_files.size}"))
           end

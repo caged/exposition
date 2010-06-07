@@ -1,8 +1,8 @@
-     <%= partial('../common/toc') %>      
+     <%= partial('toc') %>      
       <!-- main -->
       <div id="main">        
         <h3><%= @page_title %></h3>
-        <%= partial('../common/info') %>
+        <%= partial('info') %>
         
         <% if @object.documentation && @object.documentation.empty? -%>
         <h4 id="overview">Overview</h4>
@@ -23,25 +23,8 @@
         <% end %>
         <% end %>
         
-        <% if @object.properties.any? %>
-        <h4>Properties <a name="<%= anchor_for_collection(@object.properties) %>"></a></h4>
-        <ul class="member-list">
-          <%= partial('../common/member', :collection => @object.properties) %>
-        </ul>
-        <% end %>
-  
-        <% if @object.class_methods.any? %>
-        <h4>Class Methods <a name="<%= anchor_for_collection(@object.class_methods) %>"></a></h4>
-        <ul class="member-list">
-          <%= partial('../common/member', :collection => @object.class_methods) %>
-        </ul>
-        <% end %>
-        
-        <% if @object.instance_methods.any? %>
-        <h4>Instance Methods <a name="<%= anchor_for_collection(@object.instance_methods) %>"></a></h4>
-        <ul class="member-list">
-          <%= partial('../common/member', :collection => @object.instance_methods) %>
-        </ul>
-        <% end %>
+        <%= partial 'member', :locals => {:members => @object.properties, :title => 'Properties'} %>
+        <%= partial 'member', :locals => {:members => @object.class_methods, :title => 'Class Methods'} %>
+        <%= partial 'member', :locals => {:members => @object.instance_methods, :title => 'Instance Methods'} %>
       </div>
       <!-- /main -->

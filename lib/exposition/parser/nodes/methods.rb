@@ -35,12 +35,16 @@ module Methods
       parent.parent
     end
     
-    def params
+    def params_doc
       documentation.params.collect do |param|
         arg = arguments[param.arg_index]
         param.argument = arg
         param
       end
+    end
+    
+    def return_doc
+      documentation.keywords.detect { |e| e.name == 'return' }
     end
     
     def to_s

@@ -12,7 +12,7 @@ module Exposition
           create_classes_documentation
           create_protocols_documentation
           create_categories_documentation
-          create_defines_documentation
+          create_functions_documentation
           
           create_info_plist
           create_nodes_file
@@ -47,31 +47,37 @@ module Exposition
           end
         
           def create_classes_documentation
-            objc_classes.each do |key, klass|
+            objc_classes.each do |key, symbol|
+              klass = symbol[:object]
               current_file = documents_directory + "Classes/#{klass.name}.html"
               @relative_assets = assets_relative_from_file(current_file.parent)
               @page_title = "#{klass.name} Class Reference"
               @object = klass
+              @file = symbol[:file]
               write_object_file(current_file)
             end
           end
         
           def create_protocols_documentation
-            objc_protocols.each do |key, klass|
+            objc_protocols.each do |key, symbol|
+              klass = symbol[:object]
               current_file = documents_directory + "Protocols/#{klass.name}.html"
               @relative_assets = assets_relative_from_file(current_file.parent)
               @page_title = "#{klass.name} Protocol Reference"
               @object = klass
+              @file = symbol[:file]
               write_object_file(current_file)
             end
           end
         
           def create_categories_documentation
-            objc_categories.each do |key, klass|
+            objc_categories.each do |key, symbol|
+              klass = symbol[:object]
               current_file = documents_directory + "Categories/#{klass.cleaned_name}.html"
               @relative_assets = assets_relative_from_file(current_file.parent)
               @page_title = "#{klass.name} #{klass.category_name} Category Reference"
               @object = klass
+              @file = symbol[:file]
               write_object_file(current_file)
             end
           end
@@ -89,8 +95,16 @@ module Exposition
             end
           end
           
-          def create_defines_documentation
-            puts defines
+          def create_functions_documentation
+            current_file = documents_directory + "functions.html"
+            @object = nil
+            @relative_assets = assets_relative_from_file(current_file.parent)
+            @page_title = "#{config.project_name} Function Reference"
+            define_current_file(current_file)
+            contents = erb :functions
+            current_file.open('w') do |f|
+              f << contents
+            end
           end
         
           def create_nodes_file
@@ -117,19 +131,21 @@ module Exposition
             xml = Builder::XmlMarkup.new(:indent => 2)
             xml.instruct!
             xml.Tokens :version => 1.0 do
-              objc_classes.each_with_index do |objc_class, index|
-                objc_class = objc_class[1]
-                xml.File :path => path_for_object(objc_class) do
-                  xml.Token do
-                    xml.TokenIdentifier objc_class.ref
-                  end
-                  objc_class.members.each do |method|
+              [objc_classes, objc_categories, objc_protocols].each do |objs|
+                objs.each_with_index do |objc_obj, index|
+                  objc_obj = objc_obj[1][:object]
+                  xml.File :path => path_for_object(objc_obj) do
                     xml.Token do
-                      xml.TokenIdentifier method.ref
-                      if method.is_a?(Methods::Method)
-                        xml.Anchor method.body_of_method
-                      else
-                        xml.Anchor method.name
+                      xml.TokenIdentifier objc_obj.ref
+                    end
+                    objc_obj.members.each do |method|
+                      xml.Token do
+                        xml.TokenIdentifier method.ref
+                        if method.is_a?(Methods::Method)
+                          xml.Anchor method.body_of_method
+                        else
+                          xml.Anchor method.name
+                        end
                       end
                     end
                   end
@@ -220,7 +236,7 @@ module Exposition
           end
         
           def path_for_object(obj)
-            name = obj.category? ? obj.clean_name : obj.name
+            name = obj.category? ? obj.cleaned_name : obj.name
             "#{dir_for_object(obj)}/#{name}.html"
           end
           
@@ -244,8 +260,7 @@ module Exposition
         
           def write_object_file(file, locals = {})
             define_current_file(file)
-            env_locals = {}
-            contents = erb 'objc-object', :locals => env_locals.merge(locals)
+            contents = erb 'objc-object', :locals => locals
             file.open('w') do |f|
               f << contents
             end

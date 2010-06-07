@@ -30,7 +30,11 @@ module Document
     end
     
     def defines
-      select { |e| e.is_a?(Define) }
+      select { |e| e.is_a?(Define) && !e.function? }
+    end
+    
+    def functions
+      select { |e| e.is_a?(Define) && e.function? }
     end
   end
 end

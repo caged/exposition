@@ -12,7 +12,8 @@ module Exposition
           :objc_classes     => {},
           :objc_categories  => {},
           :objc_protocols   => {},
-          :defines          => {}
+          :defines          => {},
+          :functions        => {}
         }
         @assets     = []
         @properties = config
@@ -55,6 +56,10 @@ module Exposition
       def defines
         @symbols[:defines]
       end
+      
+      def functions
+        @symbols[:functions]
+      end
     
       private
         def create_output_directory
@@ -73,7 +78,7 @@ module Exposition
               types.each do |obj|
                 sym_name = obj.name.downcase.to_sym        
                 if @symbols[objc_type][sym_name].nil? 
-                  @symbols[objc_type][sym_name] = obj
+                  @symbols[objc_type][sym_name] = { :object => obj, :file => source }
                 end
               end
             end

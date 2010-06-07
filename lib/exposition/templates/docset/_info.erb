@@ -1,11 +1,11 @@
 <table class="info" cellspacing="0" cellpadding="0">
-  <% if @object.class? %>
+  <% if @object && @object.class? %>
   <tr>
     <th>Inherits from</th>
     <td><%= link_to_class(@object.superclass) %></td>
   </tr>
   <% end %>
-  <% unless @object.conforms_to.empty? %>
+  <% unless @object.nil? || (@object && @object.conforms_to.empty?) %>
   <tr>
     <th>Conforms to</th>
     <td>
@@ -18,7 +18,22 @@
   </tr>
   <% end %>
   <tr>
-    <th>Related Sample Code</th>
+    <th>Declared in</th>
+    <td>
+      <ul>
+        <% if functions.any? %>
+          <% files = functions.collect { |key, obj| obj[:file].name }.uniq %>
+          <% files.each do |name| %>
+          <li><%= name %></li>
+          <% end %>
+        <% else %>
+        <li><%= @file.name %></li>
+        <% end %>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <th>Related sample code</th>
     <td>
       <ul>
         <li><a href="#">iPhoneCoreDataRecipes</a></li>

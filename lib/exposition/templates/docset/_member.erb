@@ -1,0 +1,31 @@
+<% if members.any? %>
+<h4><%= title %> <a name="<%= anchor_for_collection(members) %>"></a></h4>
+<ul class="member-list">
+  <% members.each do |member| %>
+  <li class="member">
+    <h5 class="member-name"><%= member.name %> 
+      <% if member.is_a?(Methods::Method) %><a name="<%= member.body_of_method %>"></a>
+      <% else %><a name="<%= member.name %>"></a><% end %>
+      <a name="<%= member.ref %>"></a>
+    </h5>
+    <%= markdown(member.documentation.text) %>
+    <p><code><%= member.to_s %></code></p>
+    <% if member.is_a?(Methods::Method) %>
+      <% unless member.params_doc.empty? %>
+      <h6>Parameters</h6>
+      <dl class="param-list">
+        <% member.params_doc.each do |param| %>
+        <dt><%= param.argument.name %></dt>
+        <dd><%= markdown(param.body) %></dd>
+        <% end %>
+      </dl>
+      <% end %>
+      <% if member.return_doc %>
+      <h6>Return Value</h6>
+      <%= markdown(member.return_doc.body) %>
+      <% end %>
+    <% end %>
+  </li>
+  <% end %>
+</ul>
+<% end %>

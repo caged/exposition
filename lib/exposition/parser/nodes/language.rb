@@ -20,6 +20,10 @@ module Language
   end
   
   class Define < Documentable
+    def self.symbol
+      'func'
+    end
+    
     def name
       type_name.text_value
     end
@@ -30,6 +34,14 @@ module Language
     
     def args
       function? ? body.args.text_value.split(',').collect { |a| a.strip } : []
+    end
+    
+    def ref
+      "//apple_ref/c/#{self.class.symbol}/#{name}"
+    end
+    
+    def to_s
+      "#define #{body.text_value}"
     end
   end
   

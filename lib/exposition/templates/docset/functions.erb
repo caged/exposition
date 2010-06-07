@@ -1,0 +1,38 @@
+<!-- toc -->
+<div id="toc">
+  <ul>
+    <li><a href="#tasks" title="Functions By Tasks">Functions By Tasks</a></li>
+    <li>
+      <a href="#func" title="Functions">Functions</a>
+      <ul>
+        <% functions.each do |key, obj| %>
+        <% obj = obj[:object] %>
+        <li><a href="#<%= obj.ref %>" title=""><%= obj.name %></a></li>
+        <% end %>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- /toc -->
+    
+ <!-- main -->
+ <div id="main">        
+   <h3><%= @page_title %></h3>
+   <%= partial('info', :locals => {:functions => functions}) %>
+   
+   <% tasks = tasks_for_object(functions.collect { |k, obj| obj[:object] }) %>        
+   <% if tasks.any? %>
+   <h4 id="tasks">Tasks</h4>
+   <% tasks.each do |key, members| %>
+   <h5 id="<%= id_for_task(key, @object) %>"><%= key %></h5>
+   <ul class="members">
+     <% members.each do |member| %>
+     <li><a href="#<%= member.ref %>" title="<%= member.name %>"><%= member.name %></a> <% if member.is_a?(Properties::Property) %><span class="prop">property</span><% end %></li>
+     <% end %>
+   </ul>
+   <% end %>
+   <% end %>
+   
+   <%= partial 'member', :locals => {:members => functions.collect { |k,v| v[:object] }, :title => 'Functions'} %>
+ </div>
+ <!-- /main -->
